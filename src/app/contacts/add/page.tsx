@@ -3,7 +3,7 @@
 import { useRouter } from "next/navigation";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
-import Grid from "@mui/material/Grid";
+import Grid from "@mui/material/Unstable_Grid2";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 
@@ -17,6 +17,11 @@ export default function AddContactForm() {
         firstName: data.get("firstName"),
         middleName: data.get("middleName"),
         lastName: data.get("lastName"),
+        address1: data.get("address1"),
+        address2: data.get("address2"),
+        city: data.get("city"),
+        state: data.get("state"),
+        zip: data.get("zip"),
       };
 
       await fetch("/api/contacts", {
@@ -47,7 +52,7 @@ export default function AddContactForm() {
         </Typography>
         <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
           <Grid container spacing={2}>
-            <Grid item xs={12}>
+            <Grid xs={12}>
               <TextField
                 fullWidth
                 required
@@ -56,7 +61,7 @@ export default function AddContactForm() {
                 name="firstName"
               />
             </Grid>
-            <Grid item xs={12}>
+            <Grid xs={12}>
               <TextField
                 fullWidth
                 id="middleName"
@@ -64,7 +69,7 @@ export default function AddContactForm() {
                 name="middleName"
               />
             </Grid>
-            <Grid item xs={12}>
+            <Grid xs={12}>
               <TextField
                 fullWidth
                 required
@@ -72,6 +77,31 @@ export default function AddContactForm() {
                 label="Last Name"
                 name="lastName"
               />
+            </Grid>
+            <Grid xs={12}>
+              <TextField
+                fullWidth
+                id="address1"
+                label="Address Line 1"
+                name="address1"
+              />
+            </Grid>
+            <Grid xs={12}>
+              <TextField
+                fullWidth
+                id="address2"
+                label="Address Line 2"
+                name="address2"
+              />
+            </Grid>
+            <Grid xs={12}>
+              <TextField fullWidth id="city" label="City" name="city" />
+            </Grid>
+            <Grid xs={12}>
+              <TextField fullWidth id="state" label="State" name="state" />
+            </Grid>
+            <Grid xs={12}>
+              <TextField fullWidth id="zip" label="Zip" name="zip" />
             </Grid>
           </Grid>
           <Button

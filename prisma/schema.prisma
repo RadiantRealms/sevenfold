@@ -10,9 +10,14 @@ datasource db {
 
 model Contact {
   id         String  @id @default(cuid())
-  firstName  String?
+  firstName  String
   middleName String?
-  lastName   String?
+  lastName   String
+  address1   String?
+  address2   String?
+  city       String?
+  state      String?
+  zip        String?
 
   @@map(name: "contacts")
 }

@@ -25,6 +25,11 @@ const columns: GridColDef[] = [
     width: 150,
   },
   {
+    field: "city",
+    headerName: "City",
+    width: 150,
+  },
+  {
     field: "actions",
     type: "actions",
     getActions: (params) => [

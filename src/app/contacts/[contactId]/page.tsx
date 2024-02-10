@@ -1,8 +1,10 @@
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
+import Divider from "@mui/material/Divider";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import prisma from "../../../lib/prisma";
 import DeleteContactButton from "@/components/delete-contact-button";
+import ContactDetails from "@/components/contact-details";
 
 interface IParams {
   contactId: string;
@@ -17,7 +19,7 @@ async function getContactDetails(id: IParams["contactId"]) {
   return contact;
 }
 
-export default async function ContactDetails({ params }: { params: IParams }) {
+export default async function ContactPage({ params }: { params: IParams }) {
   const { contactId } = params;
   const contact = await getContactDetails(contactId);
 
@@ -43,6 +45,8 @@ export default async function ContactDetails({ params }: { params: IParams }) {
           " " +
           contact.lastName}
       </Typography>
+      <Divider sx={{ my: 2 }} />
+      <ContactDetails contact={contact} />
       <DeleteContactButton contactId={contactId} />
     </main>
   );
