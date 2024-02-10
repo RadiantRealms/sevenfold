@@ -18,6 +18,8 @@ model Contact {
   city       String?
   state      String?
   zip        String?
+  phone      String?
+  email      String?
 
   @@map(name: "contacts")
 }

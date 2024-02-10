@@ -38,14 +38,6 @@ export default async function ContactPage({ params }: { params: IParams }) {
       >
         View All Contacts
       </Button>
-      <Typography variant="h4">
-        {contact.firstName +
-          " " +
-          (contact?.middleName || "") +
-          " " +
-          contact.lastName}
-      </Typography>
-      <Divider sx={{ my: 2 }} />
       <ContactDetails contact={contact} />
       <DeleteContactButton contactId={contactId} />
     </main>

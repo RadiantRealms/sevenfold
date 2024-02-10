@@ -17,6 +17,8 @@ export async function POST(req: Request) {
     city,
     state,
     zip,
+    phone,
+    email,
   } = await req.json();
   const contact = await prisma.contact.create({
     data: {
@@ -28,6 +30,8 @@ export async function POST(req: Request) {
       city,
       state,
       zip,
+      phone,
+      email,
     },
   });
 

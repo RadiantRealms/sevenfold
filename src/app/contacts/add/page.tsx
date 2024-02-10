@@ -22,6 +22,8 @@ export default function AddContactForm() {
         city: data.get("city"),
         state: data.get("state"),
         zip: data.get("zip"),
+        phone: data.get("phone"),
+        email: data.get("email"),
       };
 
       await fetch("/api/contacts", {
@@ -76,6 +78,22 @@ export default function AddContactForm() {
                 id="lastName"
                 label="Last Name"
                 name="lastName"
+              />
+            </Grid>
+            <Grid xs={12}>
+              <TextField
+                fullWidth
+                id="phone"
+                label="Phone Number"
+                name="phone"
+              />
+            </Grid>
+            <Grid xs={12}>
+              <TextField
+                fullWidth
+                id="email"
+                label="Email Address"
+                name="email"
               />
             </Grid>
             <Grid xs={12}>
