@@ -7,8 +7,12 @@ export default function Home() {
   const { user } = useUser();
 
   if (!user) {
-    return <Portal />;
+    return (
+      <main>
+        <Portal />
+      </main>
+    );
   }
 
-  return <main></main>;
+  return;
 }
