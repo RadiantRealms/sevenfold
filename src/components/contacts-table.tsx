@@ -1,9 +1,11 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Link from "next/link";
 import Box from "@mui/material/Box";
 import CircularProgress from "@mui/material/CircularProgress";
-import { DataGrid, GridColDef } from "@mui/x-data-grid";
+import { DataGrid, GridActionsCellItem, GridColDef } from "@mui/x-data-grid";
+import ContactPageOutlinedIcon from "@mui/icons-material/ContactPageOutlined";
 
 const columns: GridColDef[] = [
   { field: "id", headerName: "ID", width: 90 },
@@ -21,6 +23,20 @@ const columns: GridColDef[] = [
     field: "lastName",
     headerName: "Last Name",
     width: 150,
+  },
+  {
+    field: "actions",
+    type: "actions",
+    getActions: (params) => [
+      <GridActionsCellItem
+        key={params.id}
+        icon={<ContactPageOutlinedIcon />}
+        label="View Profile"
+        component={Link}
+        // @ts-ignore
+        href={`/contacts/${params.id}`}
+      />,
+    ],
   },
 ];
 

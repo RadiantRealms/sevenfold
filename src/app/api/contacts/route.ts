@@ -8,10 +8,11 @@ export async function GET(req: Request) {
 }
 
 export async function POST(req: Request) {
-  const { firstName, lastName } = await req.json();
+  const { firstName, middleName, lastName } = await req.json();
   const contact = await prisma.contact.create({
     data: {
       firstName,
+      middleName,
       lastName,
     },
   });
