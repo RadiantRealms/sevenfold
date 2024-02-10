@@ -1,11 +1,11 @@
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
-import DeleteIcon from "@mui/icons-material/Delete";
 import prisma from "../../../lib/prisma";
+import DeleteContactButton from "@/components/delete-contact-button";
 
 interface IParams {
-  contactId?: string;
+  contactId: string;
 }
 
 async function getContactDetails(id: IParams["contactId"]) {
@@ -37,22 +37,13 @@ export default async function ContactDetails({ params }: { params: IParams }) {
         View All Contacts
       </Button>
       <Typography variant="h4">
-        {contact?.firstName +
+        {contact.firstName +
           " " +
-          contact?.middleName +
+          (contact?.middleName || "") +
           " " +
-          contact?.lastName}
+          contact.lastName}
       </Typography>
-      <Button
-        component="a"
-        href="#"
-        variant="contained"
-        color="error"
-        startIcon={<DeleteIcon />}
-        sx={{ my: 3 }}
-      >
-        Delete Contact
-      </Button>
+      <DeleteContactButton contactId={contactId} />
     </main>
   );
 }

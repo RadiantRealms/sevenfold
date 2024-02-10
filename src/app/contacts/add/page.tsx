@@ -50,6 +50,7 @@ export default function AddContactForm() {
             <Grid item xs={12}>
               <TextField
                 fullWidth
+                required
                 id="firstName"
                 label="First Name"
                 name="firstName"
@@ -66,6 +67,7 @@ export default function AddContactForm() {
             <Grid item xs={12}>
               <TextField
                 fullWidth
+                required
                 id="lastName"
                 label="Last Name"
                 name="lastName"
