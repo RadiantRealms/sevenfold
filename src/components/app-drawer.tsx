@@ -16,6 +16,7 @@ import ListItemText from "@mui/material/ListItemText";
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import ContactsIcon from "@mui/icons-material/Contacts";
 import LogoutIcon from "@mui/icons-material/Logout";
+import ReceiptIcon from "@mui/icons-material/Receipt";
 import { useUser } from "@auth0/nextjs-auth0/client";
 
 const drawerWidth = 240;
@@ -86,6 +87,14 @@ export default function AppDrawer({
                   <ContactsIcon />
                 </ListItemIcon>
                 <ListItemText primary={"Contacts"} />
+              </ListItemButton>
+            </ListItem>
+            <ListItem disablePadding>
+              <ListItemButton component="a" href="#">
+                <ListItemIcon>
+                  <ReceiptIcon />
+                </ListItemIcon>
+                <ListItemText primary={"Transactions"} />
               </ListItemButton>
             </ListItem>
           </List>

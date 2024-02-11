@@ -1,8 +1,7 @@
 import Button from "@mui/material/Button";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
-import DeleteContactButton from "@/components/delete-contact-button";
-import ContactDetails from "@/components/contact-details";
-import prisma from "../../../lib/prisma";
+import EditContactForm from "@/components/edit-contact-form";
+import prisma from "../../../../lib/prisma";
 
 interface IParams {
   contactId: string;
@@ -14,14 +13,12 @@ async function getContactDetails(id: string) {
       id,
     },
   });
-
   return contact;
 }
 
-export default async function ContactPage({ params }: { params: IParams }) {
+export default async function EditContactPage({ params }: { params: IParams }) {
   const { contactId } = params;
   const contact = await getContactDetails(contactId);
-
   if (!contact) {
     return false;
   }
@@ -30,15 +27,14 @@ export default async function ContactPage({ params }: { params: IParams }) {
     <main>
       <Button
         component="a"
-        href="/contacts"
+        href={`/contacts/${contactId}`}
         variant="outlined"
         startIcon={<ArrowBackIcon />}
         sx={{ mb: 3 }}
       >
-        View All Contacts
+        Return to contact profile
       </Button>
-      <ContactDetails contact={contact} />
-      <DeleteContactButton contactId={contactId} />
+      <EditContactForm contact={contact} />
     </main>
   );
 }

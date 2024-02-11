@@ -1,11 +1,11 @@
-import { ContactType } from "@/app/types";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Grid from "@mui/material/Unstable_Grid2";
-import Chip from "@mui/material/Chip";
+import Button from "@mui/material/Button";
 import Divider from "@mui/material/Divider";
 import Paper from "@mui/material/Paper";
-import Stack from "@mui/material/Stack";
+import EditIcon from "@mui/icons-material/Edit";
+import { ContactType } from "@/app/types";
 
 export default function ContactDetails({ contact }: { contact: ContactType }) {
   return (
@@ -18,6 +18,15 @@ export default function ContactDetails({ contact }: { contact: ContactType }) {
           contact.lastName}
       </Typography>
       <Divider sx={{ my: 2 }} />
+      <Button
+        component="a"
+        href={`/contacts/${contact.id}/edit`}
+        variant="contained"
+        startIcon={<EditIcon />}
+        sx={{ mt: 1, mb: 3 }}
+      >
+        Edit Contact
+      </Button>
       <Box
         sx={{
           display: "flex",
@@ -27,7 +36,7 @@ export default function ContactDetails({ contact }: { contact: ContactType }) {
         }}
       >
         <Paper sx={{ width: "100%", p: 4 }}>
-          <Typography variant="h5" sx={{ mb: 2 }}>
+          <Typography variant="h6" sx={{ mb: 3 }}>
             Basic Details
           </Typography>
           <Grid container spacing={2}>
