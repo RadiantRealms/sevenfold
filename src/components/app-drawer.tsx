@@ -90,7 +90,7 @@ export default function AppDrawer({
               </ListItemButton>
             </ListItem>
             <ListItem disablePadding>
-              <ListItemButton component="a" href="#">
+              <ListItemButton component="a" href="/transactions">
                 <ListItemIcon>
                   <ReceiptIcon />
                 </ListItemIcon>

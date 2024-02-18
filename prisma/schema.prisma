@@ -8,18 +8,37 @@ datasource db {
   directUrl = env("POSTGRES_URL_NON_POOLING")
 }
 
+model Transaction {
+  id          String          @id @default(cuid())
+  type        TransactionType
+  date        DateTime?
+  amount      Float
+  description String?
+  Contact     Contact?        @relation(fields: [contactId], references: [id])
+  contactId   String?
+
+  @@map(name: "transactions")
+}
+
 model Contact {
-  id         String  @id @default(cuid())
-  firstName  String
-  middleName String?
-  lastName   String
-  address1   String?
-  address2   String?
-  city       String?
-  state      String?
-  zip        String?
-  phone      String?
-  email      String?
+  id             String        @id @default(cuid())
+  organizationId String
+  firstName      String
+  middleName     String?
+  lastName       String
+  address1       String?
+  address2       String?
+  city           String?
+  state          String?
+  zip            String?
+  phone          String?
+  email          String?
+  transactions   Transaction[]
 
   @@map(name: "contacts")
+}
+
+enum TransactionType {
+  DONATION
+  EXPENSE
 }

@@ -1,11 +1,8 @@
 import type { Metadata } from "next";
 
-import { UserProvider } from "@auth0/nextjs-auth0/client";
-import { AppRouterCacheProvider } from "@mui/material-nextjs/v14-appRouter";
-import { ThemeProvider } from "@mui/material/styles";
-import theme from "../theme";
 import CssBaseline from "@mui/material/CssBaseline";
 import AppDrawer from "@/components/app-drawer";
+import Providers from "@/providers";
 
 export const metadata: Metadata = {
   title: "Sevenfold",
@@ -19,16 +16,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <UserProvider>
+      <Providers>
         <body>
-          <AppRouterCacheProvider>
-            <ThemeProvider theme={theme}>
-              <CssBaseline />
-              <AppDrawer>{children}</AppDrawer>
-            </ThemeProvider>
-          </AppRouterCacheProvider>
+          <CssBaseline />
+          <AppDrawer>{children}</AppDrawer>
         </body>
-      </UserProvider>
+      </Providers>
     </html>
   );
 }
