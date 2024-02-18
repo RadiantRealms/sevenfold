@@ -1,8 +1,8 @@
 import { NextResponse } from "next/server";
-import { getSession } from "@auth0/nextjs-auth0";
+import { withApiAuthRequired, getSession } from "@auth0/nextjs-auth0";
 import prisma from "../../../lib/prisma";
 
-export async function GET(req: Request) {
+export const GET = withApiAuthRequired(async function (req) {
   const session = await getSession();
   const organizationId = session?.user.org_id;
   const contacts = await prisma.contact.findMany({
@@ -12,9 +12,9 @@ export async function GET(req: Request) {
   });
 
   return NextResponse.json(contacts);
-}
+});
 
-export async function POST(req: Request) {
+export const POST = withApiAuthRequired(async function (req: Request) {
   const session = await getSession();
   const organizationId = session?.user.org_id;
   const {
@@ -46,4 +46,4 @@ export async function POST(req: Request) {
   });
 
   return NextResponse.json(contact);
-}
+});

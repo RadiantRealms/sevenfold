@@ -25,8 +25,13 @@ const columns: GridColDef[] = [
     width: 150,
   },
   {
-    field: "city",
-    headerName: "City",
+    field: "phone",
+    headerName: "Phone",
+    width: 150,
+  },
+  {
+    field: "email",
+    headerName: "Email",
     width: 150,
   },
   {
