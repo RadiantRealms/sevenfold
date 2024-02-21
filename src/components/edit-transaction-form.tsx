@@ -13,11 +13,18 @@ import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import { TransactionType } from "@/app/types";
 
-export default function RecordTransaction() {
+export default function RecordTransaction({
+  transaction,
+}: {
+  transaction: TransactionType;
+}) {
   const router = useRouter();
 
-  const [transactionType, setTransactionType] = useState("");
+  const [transactionType, setTransactionType] = useState(
+    transaction.type as string
+  );
 
   const handleTransactionTypeChange = (event: SelectChangeEvent) => {
     setTransactionType(event.target.value as string);
@@ -34,15 +41,15 @@ export default function RecordTransaction() {
         description: data.get("description"),
       };
 
-      await fetch("/api/transactions", {
-        method: "POST",
+      await fetch(`/api/transactions/${transaction.id}`, {
+        method: "PUT",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify(body),
       });
 
-      router.push("/transactions");
+      router.push(`/transactions/${transaction.id}`);
     } catch (error) {
       console.error(error);
     }
@@ -58,12 +65,17 @@ export default function RecordTransaction() {
         }}
       >
         <Typography component="h1" variant="h5">
-          Record Transaction
+          Edit Transaction
         </Typography>
         <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
           <Grid container spacing={2}>
             <Grid xs={12}>
-              <DatePicker label="Date" name="date" sx={{ width: "100%" }} />
+              <DatePicker
+                defaultValue={dayjs(transaction.date)}
+                label="Date"
+                name="date"
+                sx={{ width: "100%" }}
+              />
             </Grid>
             <Grid xs={12}>
               <FormControl required fullWidth>
@@ -73,6 +85,7 @@ export default function RecordTransaction() {
                 <Select
                   labelId="transaction-type-select-label"
                   id="transaction-type-select"
+                  defaultValue={transaction.type}
                   value={transactionType}
                   label="Transaction Type *"
                   onChange={handleTransactionTypeChange}
@@ -86,6 +99,7 @@ export default function RecordTransaction() {
               <TextField
                 fullWidth
                 required
+                defaultValue={transaction.amount}
                 id="amount"
                 label="Amount"
                 name="amount"
@@ -94,6 +108,7 @@ export default function RecordTransaction() {
             <Grid xs={12}>
               <TextField
                 fullWidth
+                defaultValue={transaction.description}
                 id="description"
                 label="Description"
                 name="description"

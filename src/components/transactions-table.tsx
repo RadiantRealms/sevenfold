@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import dayjs from "dayjs";
 import Box from "@mui/material/Box";
 import CircularProgress from "@mui/material/CircularProgress";
 import { DataGrid, GridActionsCellItem, GridColDef } from "@mui/x-data-grid";
@@ -13,11 +14,30 @@ const columns: GridColDef[] = [
     field: "date",
     headerName: "Date",
     width: 150,
+    valueGetter: (params) => {
+      if (!params.value) {
+        return params.value;
+      }
+
+      return dayjs(params.value).format("MM/DD/YYYY");
+    },
+  },
+  {
+    field: "type",
+    headerName: "Type",
+    width: 150,
   },
   {
     field: "amount",
     headerName: "Amount",
     width: 150,
+    valueGetter: (params) => {
+      if (!params.value) {
+        return params.value;
+      }
+
+      return `$${params.value}`;
+    },
   },
   {
     field: "description",

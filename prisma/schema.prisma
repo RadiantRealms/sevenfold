@@ -9,13 +9,14 @@ datasource db {
 }
 
 model Transaction {
-  id          String          @id @default(cuid())
-  type        TransactionType
-  date        DateTime?
-  amount      Float
-  description String?
-  Contact     Contact?        @relation(fields: [contactId], references: [id])
-  contactId   String?
+  id             String          @id @default(cuid())
+  organizationId String
+  type           TransactionType
+  date           DateTime?
+  amount         Float
+  description    String?
+  Contact        Contact?        @relation(fields: [contactId], references: [id])
+  contactId      String?
 
   @@map(name: "transactions")
 }
