@@ -1,21 +1,18 @@
 import { NextResponse } from "next/server";
+import { withApiAuthRequired } from "@auth0/nextjs-auth0";
 import prisma from "../../../../lib/prisma";
 
-interface IParams {
-  contactId: string;
-}
-
-export async function GET(req: Request, { params }: { params: IParams }) {
+export const GET = withApiAuthRequired(async function (req, { params }) {
   const contact = await prisma.contact.findUnique({
     where: {
-      id: params.contactId,
+      id: params?.contactId as string,
     },
   });
 
   return NextResponse.json(contact);
-}
+});
 
-export async function PUT(req: Request, { params }: { params: IParams }) {
+export const PUT = withApiAuthRequired(async function (req, { params }) {
   const {
     firstName,
     middleName,
@@ -30,7 +27,7 @@ export async function PUT(req: Request, { params }: { params: IParams }) {
   } = await req.json();
   const contact = await prisma.contact.update({
     where: {
-      id: params.contactId,
+      id: params?.contactId as string,
     },
     data: {
       firstName,
@@ -47,14 +44,14 @@ export async function PUT(req: Request, { params }: { params: IParams }) {
   });
 
   return NextResponse.json(contact);
-}
+});
 
-export async function DELETE(req: Request, { params }: { params: IParams }) {
+export const DELETE = withApiAuthRequired(async function (req, { params }) {
   const contact = await prisma.contact.delete({
     where: {
-      id: params.contactId,
+      id: params?.contactId as string,
     },
   });
 
   return NextResponse.json(contact);
-}
+});
