@@ -1,24 +1,15 @@
 import Button from "@mui/material/Button";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import EditContactForm from "@/components/edit-contact-form";
-import prisma from "../../../../lib/prisma";
+import getContactById from "@/app/actions/getContactById";
 
 interface IParams {
   contactId: string;
 }
 
-async function getContactDetails(id: string) {
-  const contact = await prisma.contact.findUnique({
-    where: {
-      id,
-    },
-  });
-  return contact;
-}
-
 export default async function EditContactPage({ params }: { params: IParams }) {
   const { contactId } = params;
-  const contact = await getContactDetails(contactId);
+  const contact = await getContactById(contactId);
   if (!contact) {
     return false;
   }
