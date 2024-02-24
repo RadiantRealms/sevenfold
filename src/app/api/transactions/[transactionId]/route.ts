@@ -27,7 +27,7 @@ export const PUT = withApiAuthRequired(async function (req, { params }) {
       organizationId,
       type,
       date,
-      amount: parseFloat(amount),
+      amount: Math.round(amount * 100) / 100,
       description,
     },
   });

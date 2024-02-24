@@ -20,14 +20,15 @@ export const GET = withApiAuthRequired(async function (req) {
 export const POST = withApiAuthRequired(async function (req) {
   const session = await getSession();
   const organizationId = session?.user.org_id;
-  const { type, date, amount, description } = await req.json();
+  const { type, date, amount, description, contactId } = await req.json();
   const transaction = await prisma.transaction.create({
     data: {
       organizationId,
       type,
       date,
-      amount: parseFloat(amount),
+      amount: Math.round(amount * 100) / 100,
       description,
+      contactId,
     },
   });
 

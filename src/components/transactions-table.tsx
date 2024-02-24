@@ -45,6 +45,21 @@ const columns: GridColDef[] = [
     width: 150,
   },
   {
+    field: "Contact",
+    headerName: "Contact",
+    width: 150,
+    renderCell: (params) => {
+      if (!params.value) {
+        return params.value;
+      }
+      return (
+        <a
+          href={`/contacts/${params.value.id}`}
+        >{`${params.value.firstName} ${params.value.middleName} ${params.value.lastName}`}</a>
+      );
+    },
+  },
+  {
     field: "actions",
     type: "actions",
     getActions: (params) => [
