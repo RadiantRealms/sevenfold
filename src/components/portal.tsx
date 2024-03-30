@@ -5,7 +5,7 @@ import Typography from "@mui/material/Typography";
 
 export default function Portal() {
   return (
-    <Box sx={{ mt: 3 }}>
+    <Box sx={{ mt: 3 }} data-testid="portal">
       <Typography gutterBottom variant="h3" textAlign={"center"}>
         Sevenfold
       </Typography>
