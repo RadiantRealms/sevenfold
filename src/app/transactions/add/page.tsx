@@ -1,6 +1,6 @@
 import AddTransactionForm from "@/components/add-transaction-form";
 
-export default function AddTransaction() {
+export default function AddTransactionPage() {
   return (
     <main>
       <AddTransactionForm />

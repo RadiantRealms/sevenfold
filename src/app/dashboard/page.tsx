@@ -1,9 +1,9 @@
 "use client";
 
-import { useUser, withPageAuthRequired } from "@auth0/nextjs-auth0/client";
+import { useUser } from "@auth0/nextjs-auth0/client";
 import Dashboard from "@/components/dashboard";
 
-export default withPageAuthRequired(function DashboardPage() {
+export default function DashboardPage() {
   const { user } = useUser();
 
   return (
@@ -15,4 +15,4 @@ export default withPageAuthRequired(function DashboardPage() {
       )}
     </main>
   );
-});
+}

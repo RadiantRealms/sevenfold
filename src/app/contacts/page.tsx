@@ -2,7 +2,7 @@ import Button from "@mui/material/Button";
 import PersonAddIcon from "@mui/icons-material/PersonAdd";
 import ContactsTable from "@/components/contacts-table";
 
-export default async function Contacts() {
+export default function ContactsPage() {
   return (
     <main>
       <Button

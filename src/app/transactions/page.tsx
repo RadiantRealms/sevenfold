@@ -2,7 +2,7 @@ import Button from "@mui/material/Button";
 import PaidIcon from "@mui/icons-material/Paid";
 import TransactionsTable from "@/components/transactions-table";
 
-export default async function Transactions() {
+export default async function TransactionsPage() {
   return (
     <main>
       <Button
