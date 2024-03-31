@@ -1,4 +1,5 @@
 import "@testing-library/jest-dom";
+
 import type { NextApiHandler, NextPage } from "next";
 
 afterEach(() => {
@@ -10,7 +11,8 @@ jest.mock("@auth0/nextjs-auth0", () => {
   return {
     getSession: () => ({
       user: {
-        sub: "bob",
+        sub: "foo",
+        organizationId: "1",
       },
     }),
     getAccessToken: () => "access_token",

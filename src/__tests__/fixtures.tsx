@@ -6,7 +6,8 @@ export const mockUser = {
   name: "foo",
   nickname: "foo",
   picture: "foo.jpg",
-  sub: "1",
+  sub: "foo",
+  organizationId: "1",
   updated_at: null,
 };
 
