@@ -1,22 +1,18 @@
-"use client";
-
-import { useUser } from "@auth0/nextjs-auth0/client";
 import Typography from "@mui/material/Typography";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 
-export default function DashboardHeader() {
-  const { user } = useUser();
+import type { UserProfile } from "@auth0/nextjs-auth0/client";
 
-  if (!user) {
-    return false;
-  }
-
+export default function DashboardHeader({ user }: { user: UserProfile }) {
   const orgName = user.org_name as string;
 
   return (
-    <Card sx={{ display: "flex", alignItems: "center", px: 2 }}>
+    <Card
+      sx={{ display: "flex", alignItems: "center", px: 2 }}
+      data-testid="dashboard-header"
+    >
       <CardMedia
         component="img"
         sx={{ height: 70, width: 70 }}

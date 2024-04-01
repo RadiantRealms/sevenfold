@@ -74,7 +74,7 @@ export default function AppDrawer({
         <Box sx={{ overflow: "auto" }}>
           <List>
             <ListItem disablePadding>
-              <ListItemButton component="a" href="/">
+              <ListItemButton component="a" href="/dashboard">
                 <ListItemIcon>
                   <DashboardIcon />
                 </ListItemIcon>
