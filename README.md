@@ -1,36 +1,75 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Sevenfold
+
+Built with Next.js, Auth0, and Material UI, this web application enables organizations to efficiently manage their member information and track financial transactions. The idea for this project emerged from a partnership with New Mount Zion Missionary Baptist Church of Seminola, based in Hialeah, Florida. The live application can be found at https://sevenfold.app. Users must be a member of an organizaation to access the application, so by default, any new registrant is placed into the **sandbox** organization.
+
+## Features
+
+- Authentication with Auth0
+- Create and manage contacts
+- Create and manage transactions
+  - Categorize a transaction as a donation or expense
+  - Associate a transaction with a contact
+- Create and manage groups (TODO)
+- Integrate with Plaid to automate transaction retrieval (TODO)
 
 ## Getting Started
 
-First, run the development server:
+Before running this project, you will need to have the following installed:
+
+- Node.js (v18.17 or later)
+- npm (v10 or later)
+
+### Auth0 Configuration
+
+Create a Regular Web Application in the [Auth0 Dashboard](https://manage.auth0.com/#/applications). Next, configure the following URLs for your application under the "Application URIs" section of the "Settings" page:
+
+- Allowed Callback URLs: http://localhost:3000/api/auth/callback
+- Allowed Logout URLs: http://localhost:3000/
+
+Take note of the Client ID, Client Secret, and Domain values under the "Basic Information" section. You'll need these values in the next step.
+
+### Installation
+
+1. Clone this repository to your local machine:
+
+```bash
+git clone git@github.com:glwjr/sevenfold.git
+```
+
+2. Change directory into the project:
+
+```bash
+cd sevenfold
+```
+
+3. Install the dependencies:
+
+```bash
+npm install
+```
+
+4. Create a PostgreSQL database and add a .env file in the root directory with the following environment variables:
+
+```bash
+AUTH0_BASE_URL="http://localhost:3000"
+AUTH0_CLIENT_ID="<AUTH0-CLIENT-ID>"
+AUTH0_CLIENT_SECRET="<AUTH0-CLIENT-SECRET>"
+AUTH0_ISSUER_BASE_URL="<AUTH0-ISSUER-BASE-URL>"
+AUTH0_SECRET="<AUTH0-SECRET>"
+POSTGRES_PRISMA_URL="<POSTGRES-DATABASE-URL>"
+POSTGRES_URL_NON_POOLING="<POSTGRES-DATABASE-NON-POOLING-URL>"
+```
+
+You can execute the following command to generate an appropriate string for the `AUTH0_SECRET` value:
+
+```bash
+node -e "console.log(crypto.randomBytes(32).toString('hex'))"
+```
+
+6. Start the development server:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+7. Open a web browser and navigate to http://localhost:3000 to view the application.
