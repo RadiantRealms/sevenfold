@@ -8,6 +8,15 @@ datasource db {
   directUrl = env("POSTGRES_URL_NON_POOLING")
 }
 
+model Group {
+  id             String    @id @default(cuid())
+  organizationId String
+  name           String
+  contacts       Contact[]
+
+  @@map(name: "groups")
+}
+
 model Transaction {
   id             String          @id @default(cuid())
   organizationId String
@@ -35,6 +44,8 @@ model Contact {
   phone          String?
   email          String?
   transactions   Transaction[]
+  Group          Group?        @relation(fields: [groupId], references: [id])
+  groupId        String?
 
   @@map(name: "contacts")
 }

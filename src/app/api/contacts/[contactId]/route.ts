@@ -8,6 +8,9 @@ export const GET = withApiAuthRequired(async function (req, { params }) {
       where: {
         id: params?.contactId as string,
       },
+      include: {
+        Group: true,
+      },
     });
 
     return NextResponse.json(contact);
