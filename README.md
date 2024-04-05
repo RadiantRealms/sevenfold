@@ -1,10 +1,10 @@
-# Sevenfold: A Organization Management App
+# Sevenfold: An Organization Management App
 
 Sevenfold is a web application built with Next.js, Auth0, and Material UI to help organizations manage member information and track financial transactions.
 
 ### Inspiration:
 
-This project was inspired by a partnership with New Mount Zion Missionary Baptist Church of Seminola, Florida.
+This project was inspired by a partnership with New Mount Zion Missionary Baptist Church of Seminola, based in Hialeah, Florida.
 
 ## Features:
 
