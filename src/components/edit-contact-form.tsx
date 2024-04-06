@@ -1,15 +1,29 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import Grid from "@mui/material/Unstable_Grid2";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
-import { ContactType } from "@/app/types";
+import InputLabel from "@mui/material/InputLabel";
+import MenuItem from "@mui/material/MenuItem";
+import FormControl from "@mui/material/FormControl";
+import Select, { SelectChangeEvent } from "@mui/material/Select";
+import CircularProgress from "@mui/material/CircularProgress";
+import { ContactType, GroupType } from "@/app/types";
 
 export default function EditContactForm({ contact }: { contact: ContactType }) {
   const router = useRouter();
+  const [groupList, setGroupList] = useState<GroupType[]>([]);
+  const [associatedGroupId, setAssociatedGroupId] = useState(contact.groupId);
+  const [isLoading, setLoading] = useState(true);
+
+  const handleAssociatedGroupChange = (event: SelectChangeEvent) => {
+    setAssociatedGroupId(event.target.value);
+  };
+
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     try {
@@ -25,6 +39,7 @@ export default function EditContactForm({ contact }: { contact: ContactType }) {
         zip: data.get("zip"),
         phone: data.get("phone"),
         email: data.get("email"),
+        groupId: associatedGroupId,
       };
 
       await fetch(`/api/contacts/${contact.id}`, {
@@ -41,6 +56,34 @@ export default function EditContactForm({ contact }: { contact: ContactType }) {
     }
   };
 
+  useEffect(() => {
+    try {
+      fetch("/api/groups")
+        .then((res) => res.json())
+        .then((data) => {
+          setGroupList(data);
+          setLoading(false);
+        });
+    } catch (error) {
+      console.error(error);
+    }
+  }, []);
+
+  if (isLoading) {
+    return (
+      <Box
+        sx={{
+          display: "flex",
+          width: "100%",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
+        <CircularProgress />
+      </Box>
+    );
+  }
+
   return (
     <Box
       sx={{
@@ -54,7 +97,7 @@ export default function EditContactForm({ contact }: { contact: ContactType }) {
       </Typography>
       <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
         <Grid container spacing={2}>
-          <Grid xs={12}>
+          <Grid xs={4}>
             <TextField
               fullWidth
               required
@@ -64,7 +107,7 @@ export default function EditContactForm({ contact }: { contact: ContactType }) {
               name="firstName"
             />
           </Grid>
-          <Grid xs={12}>
+          <Grid xs={4}>
             <TextField
               fullWidth
               defaultValue={contact.middleName}
@@ -73,7 +116,7 @@ export default function EditContactForm({ contact }: { contact: ContactType }) {
               name="middleName"
             />
           </Grid>
-          <Grid xs={12}>
+          <Grid xs={4}>
             <TextField
               fullWidth
               required
@@ -83,7 +126,7 @@ export default function EditContactForm({ contact }: { contact: ContactType }) {
               name="lastName"
             />
           </Grid>
-          <Grid xs={12}>
+          <Grid xs={6}>
             <TextField
               fullWidth
               defaultValue={contact.phone}
@@ -92,7 +135,7 @@ export default function EditContactForm({ contact }: { contact: ContactType }) {
               name="phone"
             />
           </Grid>
-          <Grid xs={12}>
+          <Grid xs={6}>
             <TextField
               fullWidth
               defaultValue={contact.email}
@@ -119,7 +162,7 @@ export default function EditContactForm({ contact }: { contact: ContactType }) {
               name="address2"
             />
           </Grid>
-          <Grid xs={12}>
+          <Grid xs={4}>
             <TextField
               defaultValue={contact.city}
               fullWidth
@@ -128,7 +171,7 @@ export default function EditContactForm({ contact }: { contact: ContactType }) {
               name="city"
             />
           </Grid>
-          <Grid xs={12}>
+          <Grid xs={4}>
             <TextField
               defaultValue={contact.state}
               fullWidth
@@ -137,7 +180,7 @@ export default function EditContactForm({ contact }: { contact: ContactType }) {
               name="state"
             />
           </Grid>
-          <Grid xs={12}>
+          <Grid xs={4}>
             <TextField
               fullWidth
               defaultValue={contact.zip}
@@ -145,6 +188,27 @@ export default function EditContactForm({ contact }: { contact: ContactType }) {
               label="Zip"
               name="zip"
             />
+          </Grid>
+          <Grid xs={12}>
+            <FormControl fullWidth>
+              <InputLabel id="associated-group-select-label">
+                Associated Group
+              </InputLabel>
+              <Select
+                labelId="associated-group-select-label"
+                id="associated-group-select"
+                value={associatedGroupId || ""}
+                label="Associated Group"
+                onChange={handleAssociatedGroupChange}
+              >
+                <MenuItem value={""}>None</MenuItem>
+                {groupList.map((group: GroupType) => (
+                  <MenuItem key={group.id} value={group.id}>
+                    {group.name}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
           </Grid>
         </Grid>
         <Button

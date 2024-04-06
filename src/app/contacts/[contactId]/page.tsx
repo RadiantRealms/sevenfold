@@ -14,7 +14,7 @@ interface IParams {
   contactId: string;
 }
 
-export default function ContactPage({ params }: { params: IParams }) {
+export default function ContactDetailsPage({ params }: { params: IParams }) {
   const [contact, setContact] = useState<ContactType | null>(null);
   const [isLoading, setLoading] = useState(true);
 

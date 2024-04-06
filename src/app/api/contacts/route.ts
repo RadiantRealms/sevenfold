@@ -36,6 +36,7 @@ export const POST = withApiAuthRequired(async function (req: Request) {
       zip,
       phone,
       email,
+      groupId,
     } = await req.json();
     const contact = await prisma.contact.create({
       data: {
@@ -50,6 +51,7 @@ export const POST = withApiAuthRequired(async function (req: Request) {
         zip,
         phone,
         email,
+        groupId,
       },
     });
 

@@ -35,6 +35,7 @@ export const PUT = withApiAuthRequired(async function (req, { params }) {
       zip,
       phone,
       email,
+      groupId,
     } = await req.json();
     const contact = await prisma.contact.update({
       where: {
@@ -51,6 +52,7 @@ export const PUT = withApiAuthRequired(async function (req, { params }) {
         zip,
         phone,
         email,
+        groupId: groupId === "" ? null : groupId,
       },
     });
 

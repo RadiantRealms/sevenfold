@@ -18,9 +18,13 @@ export default function ContactDetails({ contact }: { contact: ContactType }) {
             " " +
             contact.lastName}
         </Typography>
-        <Typography variant="body1" gutterBottom>
-          <strong>Group:</strong> {contact.groupId}
-        </Typography>
+        {contact.groupId ? (
+          <Typography variant="body1" gutterBottom>
+            <strong>Group:</strong> {contact.Group?.name}
+          </Typography>
+        ) : (
+          false
+        )}
       </Box>
       <Divider sx={{ my: 2 }} />
       <Button
