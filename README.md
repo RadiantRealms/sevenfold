@@ -1,10 +1,6 @@
 # Sevenfold: An Organization Management App
 
-Sevenfold is a web application built with Next.js, Auth0, and Material UI to help organizations manage member information and track financial transactions.
-
-### Inspiration:
-
-This project was inspired by a partnership with New Mount Zion Missionary Baptist Church of Seminola, based in Hialeah, Florida.
+Sevenfold is a web application built with Next.js, Auth0, and Material UI to help organizations manage member information and track financial transactions. This project was inspired by a partnership with New Mount Zion Missionary Baptist Church of Seminola, based in Hialeah, Florida.
 
 ## Features:
 
@@ -21,7 +17,7 @@ This project was inspired by a partnership with New Mount Zion Missionary Baptis
 
 ## Setup:
 
-### Auth0 Configuration:
+### Configure Auth0:
 
 - Create a Regular Web Application in the Auth0 Dashboard: https://manage.auth0.com/#/applications
 - Set up Callback and Logout URLs in the application settings:
@@ -35,7 +31,7 @@ This project was inspired by a partnership with New Mount Zion Missionary Baptis
 - Navigate to the project directory: `cd sevenfold`
 - Install dependencies: `npm install`
 
-### Database & Environment Variables:
+### Set Database & Environment Variables:
 
 - Create a PostgreSQL database.
 - Create a `.env` file in the root directory with the following variables (replace placeholders):
@@ -62,7 +58,7 @@ openssl rand -base64 32
 npm run dev
 ```
 
-### Access Application:
+### Access the Application:
 
 Open http://localhost:3000 in your web browser.
 
