@@ -10,13 +10,22 @@ import { ContactType } from "@/app/types";
 export default function ContactDetails({ contact }: { contact: ContactType }) {
   return (
     <>
-      <Typography variant="h4" gutterBottom>
-        {contact.firstName +
-          " " +
-          (contact?.middleName || "") +
-          " " +
-          contact.lastName}
-      </Typography>
+      <Box>
+        <Typography variant="h4">
+          {contact.firstName +
+            " " +
+            (contact?.middleName || "") +
+            " " +
+            contact.lastName}
+        </Typography>
+        {contact.groupId ? (
+          <Typography variant="body1" gutterBottom>
+            <strong>Group:</strong> {contact.Group?.name}
+          </Typography>
+        ) : (
+          false
+        )}
+      </Box>
       <Divider sx={{ my: 2 }} />
       <Button
         component="a"
@@ -33,6 +42,7 @@ export default function ContactDetails({ contact }: { contact: ContactType }) {
           flexDirection: "column",
           alignItems: "center",
           width: "100%",
+          minWidth: 800,
         }}
       >
         <Paper sx={{ width: "100%", p: 4 }}>
@@ -40,7 +50,7 @@ export default function ContactDetails({ contact }: { contact: ContactType }) {
             Basic Details
           </Typography>
           <Grid container spacing={2}>
-            <Grid xs={12}>
+            <Grid xs={4}>
               <Typography gutterBottom variant="subtitle2" fontWeight={500}>
                 First Name
               </Typography>
@@ -49,7 +59,7 @@ export default function ContactDetails({ contact }: { contact: ContactType }) {
               </Typography>
               <Divider sx={{ my: 2 }} />
             </Grid>
-            <Grid xs={12}>
+            <Grid xs={4}>
               <Typography gutterBottom variant="subtitle2" fontWeight={500}>
                 Middle Name
               </Typography>
@@ -58,7 +68,7 @@ export default function ContactDetails({ contact }: { contact: ContactType }) {
               </Typography>
               <Divider sx={{ my: 2 }} />
             </Grid>
-            <Grid xs={12}>
+            <Grid xs={4}>
               <Typography gutterBottom variant="subtitle2" fontWeight={500}>
                 Last Name
               </Typography>
@@ -67,7 +77,7 @@ export default function ContactDetails({ contact }: { contact: ContactType }) {
               </Typography>
               <Divider sx={{ my: 2 }} />
             </Grid>
-            <Grid xs={12}>
+            <Grid xs={6}>
               <Typography gutterBottom variant="subtitle2" fontWeight={500}>
                 Phone Number
               </Typography>
@@ -76,7 +86,7 @@ export default function ContactDetails({ contact }: { contact: ContactType }) {
               </Typography>
               <Divider sx={{ my: 2 }} />
             </Grid>
-            <Grid xs={12}>
+            <Grid xs={6}>
               <Typography gutterBottom variant="subtitle2" fontWeight={500}>
                 Email Address
               </Typography>
@@ -86,6 +96,9 @@ export default function ContactDetails({ contact }: { contact: ContactType }) {
               <Divider sx={{ my: 2 }} />
             </Grid>
             <Grid xs={12}>
+              <Typography variant="h6" sx={{ mb: 3 }}>
+                Address
+              </Typography>
               <Typography gutterBottom variant="subtitle2" fontWeight={500}>
                 Address Line 1
               </Typography>
@@ -103,7 +116,7 @@ export default function ContactDetails({ contact }: { contact: ContactType }) {
               </Typography>
               <Divider sx={{ my: 2 }} />
             </Grid>
-            <Grid xs={12}>
+            <Grid xs={4}>
               <Typography gutterBottom variant="subtitle2" fontWeight={500}>
                 City
               </Typography>
@@ -112,7 +125,7 @@ export default function ContactDetails({ contact }: { contact: ContactType }) {
               </Typography>
               <Divider sx={{ my: 2 }} />
             </Grid>
-            <Grid xs={12}>
+            <Grid xs={4}>
               <Typography gutterBottom variant="subtitle2" fontWeight={500}>
                 State
               </Typography>
@@ -121,13 +134,14 @@ export default function ContactDetails({ contact }: { contact: ContactType }) {
               </Typography>
               <Divider sx={{ my: 2 }} />
             </Grid>
-            <Grid xs={12}>
+            <Grid xs={4}>
               <Typography gutterBottom variant="subtitle2" fontWeight={500}>
                 Zip
               </Typography>
               <Typography variant="body1" sx={{ minHeight: 24 }}>
                 {contact.zip}
               </Typography>
+              <Divider sx={{ my: 2 }} />
             </Grid>
           </Grid>
         </Paper>

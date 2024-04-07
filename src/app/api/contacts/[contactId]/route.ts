@@ -8,6 +8,9 @@ export const GET = withApiAuthRequired(async function (req, { params }) {
       where: {
         id: params?.contactId as string,
       },
+      include: {
+        Group: true,
+      },
     });
 
     return NextResponse.json(contact);
@@ -32,6 +35,7 @@ export const PUT = withApiAuthRequired(async function (req, { params }) {
       zip,
       phone,
       email,
+      groupId,
     } = await req.json();
     const contact = await prisma.contact.update({
       where: {
@@ -48,6 +52,7 @@ export const PUT = withApiAuthRequired(async function (req, { params }) {
         zip,
         phone,
         email,
+        groupId: groupId === "" ? null : groupId,
       },
     });
 

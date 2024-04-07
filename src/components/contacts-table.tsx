@@ -5,7 +5,7 @@ import Link from "next/link";
 import Box from "@mui/material/Box";
 import CircularProgress from "@mui/material/CircularProgress";
 import { DataGrid, GridActionsCellItem, GridColDef } from "@mui/x-data-grid";
-import ContactPageOutlinedIcon from "@mui/icons-material/ContactPageOutlined";
+import InfoIcon from "@mui/icons-material/Info";
 
 const columns: GridColDef[] = [
   { field: "id", headerName: "ID", width: 90 },
@@ -36,11 +36,12 @@ const columns: GridColDef[] = [
   },
   {
     field: "actions",
+    headerName: "Profile",
     type: "actions",
     getActions: (params) => [
       <GridActionsCellItem
         key={params.id}
-        icon={<ContactPageOutlinedIcon />}
+        icon={<InfoIcon />}
         label="View Profile"
         component={Link}
         // @ts-ignore
@@ -98,7 +99,6 @@ export default function ContactsTable() {
           },
         }}
         pageSizeOptions={[5]}
-        checkboxSelection
         disableRowSelectionOnClick
       />
     </Box>

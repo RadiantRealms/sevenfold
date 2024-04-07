@@ -1,14 +1,27 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import Grid from "@mui/material/Unstable_Grid2";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
+import InputLabel from "@mui/material/InputLabel";
+import MenuItem from "@mui/material/MenuItem";
+import FormControl from "@mui/material/FormControl";
+import Select, { SelectChangeEvent } from "@mui/material/Select";
+import { GroupType } from "@/app/types";
 
 export default function AddContactForm() {
   const router = useRouter();
+  const [groupList, setGroupList] = useState([]);
+  const [associatedGroupId, setAssociatedGroupId] = useState("");
+
+  const handleAssociatedGroupChange = (event: SelectChangeEvent) => {
+    setAssociatedGroupId(event.target.value as string);
+  };
+
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     try {
@@ -24,9 +37,10 @@ export default function AddContactForm() {
         zip: data.get("zip"),
         phone: data.get("phone"),
         email: data.get("email"),
+        groupId: associatedGroupId,
       };
 
-      await fetch("/api/contacts", {
+      const res = await fetch("/api/contacts", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -34,113 +48,139 @@ export default function AddContactForm() {
         body: JSON.stringify(body),
       });
 
-      router.push("/contacts");
+      const contact = await res.json();
+
+      router.push(`/contacts/${contact.id}`);
     } catch (error) {
       console.error(error);
     }
   };
 
+  useEffect(() => {
+    try {
+      fetch("/api/groups")
+        .then((res) => res.json())
+        .then((data) => setGroupList(data));
+    } catch (error) {
+      console.error(error);
+    }
+  }, []);
+
   return (
-    <main>
-      <Box
-        sx={{
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-        }}
-      >
-        <Typography component="h1" variant="h5">
-          Add Contact
-        </Typography>
-        <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
-          <Grid container spacing={2}>
-            <Grid xs={12}>
-              <TextField
-                fullWidth
-                required
-                id="firstName"
-                label="First Name"
-                name="firstName"
-              />
-            </Grid>
-            <Grid xs={12}>
-              <TextField
-                fullWidth
-                id="middleName"
-                label="Middle Name"
-                name="middleName"
-              />
-            </Grid>
-            <Grid xs={12}>
-              <TextField
-                fullWidth
-                required
-                id="lastName"
-                label="Last Name"
-                name="lastName"
-              />
-            </Grid>
-            <Grid xs={12}>
-              <TextField
-                fullWidth
-                id="phone"
-                label="Phone Number"
-                name="phone"
-              />
-            </Grid>
-            <Grid xs={12}>
-              <TextField
-                fullWidth
-                id="email"
-                label="Email Address"
-                name="email"
-              />
-            </Grid>
-            <Grid xs={12}>
-              <TextField
-                fullWidth
-                id="address1"
-                label="Address Line 1"
-                name="address1"
-              />
-            </Grid>
-            <Grid xs={12}>
-              <TextField
-                fullWidth
-                id="address2"
-                label="Address Line 2"
-                name="address2"
-              />
-            </Grid>
-            <Grid xs={12}>
-              <TextField fullWidth id="city" label="City" name="city" />
-            </Grid>
-            <Grid xs={12}>
-              <TextField fullWidth id="state" label="State" name="state" />
-            </Grid>
-            <Grid xs={12}>
-              <TextField fullWidth id="zip" label="Zip" name="zip" />
-            </Grid>
+    <Box
+      sx={{
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+      }}
+    >
+      <Typography component="h1" variant="h5">
+        Add Contact
+      </Typography>
+      <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
+        <Grid container spacing={2}>
+          <Grid xs={4}>
+            <TextField
+              fullWidth
+              required
+              id="firstName"
+              label="First Name"
+              name="firstName"
+            />
           </Grid>
-          <Button
-            type="submit"
-            fullWidth
-            variant="contained"
-            sx={{ mt: 3, mb: 2 }}
-          >
-            Submit
-          </Button>
-          <Button
-            component="a"
-            href="/contacts"
-            fullWidth
-            variant="outlined"
-            sx={{ mb: 2 }}
-          >
-            Cancel
-          </Button>
-        </Box>
+          <Grid xs={4}>
+            <TextField
+              fullWidth
+              id="middleName"
+              label="Middle Name"
+              name="middleName"
+            />
+          </Grid>
+          <Grid xs={4}>
+            <TextField
+              fullWidth
+              required
+              id="lastName"
+              label="Last Name"
+              name="lastName"
+            />
+          </Grid>
+          <Grid xs={6}>
+            <TextField fullWidth id="phone" label="Phone Number" name="phone" />
+          </Grid>
+          <Grid xs={6}>
+            <TextField
+              fullWidth
+              id="email"
+              label="Email Address"
+              name="email"
+            />
+          </Grid>
+          <Grid xs={12}>
+            <TextField
+              fullWidth
+              id="address1"
+              label="Address Line 1"
+              name="address1"
+            />
+          </Grid>
+          <Grid xs={12}>
+            <TextField
+              fullWidth
+              id="address2"
+              label="Address Line 2"
+              name="address2"
+            />
+          </Grid>
+          <Grid xs={4}>
+            <TextField fullWidth id="city" label="City" name="city" />
+          </Grid>
+          <Grid xs={4}>
+            <TextField fullWidth id="state" label="State" name="state" />
+          </Grid>
+          <Grid xs={4}>
+            <TextField fullWidth id="zip" label="Zip" name="zip" />
+          </Grid>
+          <Grid xs={12}>
+            <FormControl fullWidth>
+              <InputLabel id="associated-group-select-label">
+                Associated Group
+              </InputLabel>
+              <Select
+                labelId="associated-group-select-label"
+                id="associated-group-select"
+                value={associatedGroupId}
+                label="Associated Group"
+                onChange={handleAssociatedGroupChange}
+              >
+                <MenuItem value="">None</MenuItem>
+                {groupList.map((group: GroupType) => (
+                  <MenuItem key={group.id} value={group.id}>
+                    {group.name}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+          </Grid>
+        </Grid>
+        <Button
+          type="submit"
+          fullWidth
+          variant="contained"
+          sx={{ mt: 3, mb: 2 }}
+        >
+          Submit
+        </Button>
+        <Button
+          component="a"
+          href="/contacts"
+          fullWidth
+          variant="outlined"
+          sx={{ mb: 2 }}
+        >
+          Cancel
+        </Button>
       </Box>
-    </main>
+    </Box>
   );
 }

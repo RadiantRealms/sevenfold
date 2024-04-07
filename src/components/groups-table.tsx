@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import dayjs from "dayjs";
 import Box from "@mui/material/Box";
 import CircularProgress from "@mui/material/CircularProgress";
 import { DataGrid, GridActionsCellItem, GridColDef } from "@mui/x-data-grid";
@@ -11,52 +10,19 @@ import InfoIcon from "@mui/icons-material/Info";
 const columns: GridColDef[] = [
   { field: "id", headerName: "ID", width: 90 },
   {
-    field: "date",
-    headerName: "Date",
-    width: 150,
-    valueGetter: (params) => {
-      if (!params.value) {
-        return params.value;
-      }
-
-      return dayjs(params.value).format("MM/DD/YYYY");
-    },
-  },
-  {
-    field: "type",
-    headerName: "Type",
+    field: "name",
+    headerName: "Group Name",
     width: 150,
   },
   {
-    field: "amount",
-    headerName: "Amount",
-    width: 150,
-    valueGetter: (params) => {
-      if (!params.value) {
-        return params.value;
-      }
-
-      return `$${params.value}`;
-    },
-  },
-  {
-    field: "description",
-    headerName: "Description",
-    width: 150,
-  },
-  {
-    field: "Contact",
-    headerName: "Contact",
+    field: "contacts",
+    headerName: "Member Count",
     width: 150,
     renderCell: (params) => {
       if (!params.value) {
         return params.value;
       }
-      return (
-        <a
-          href={`/contacts/${params.value.id}`}
-        >{`${params.value.firstName} ${params.value.middleName} ${params.value.lastName}`}</a>
-      );
+      return params.value.length;
     },
   },
   {
@@ -67,25 +33,25 @@ const columns: GridColDef[] = [
       <GridActionsCellItem
         key={params.id}
         icon={<InfoIcon />}
-        label="View Transaction"
+        label="Group Actions"
         component={Link}
         // @ts-ignore
-        href={`/transactions/${params.id}`}
+        href={`/groups/${params.id}`}
       />,
     ],
   },
 ];
 
-export default function TransactionsTable() {
-  const [transcations, setTransactions] = useState([]);
+export default function GroupsTable() {
+  const [groups, setGroups] = useState([]);
   const [isLoading, setLoading] = useState(true);
 
   useEffect(() => {
     try {
-      fetch("/api/transactions")
+      fetch("/api/groups")
         .then((res) => res.json())
         .then((data) => {
-          setTransactions(data);
+          setGroups(data);
           setLoading(false);
         });
     } catch (error) {
@@ -111,7 +77,7 @@ export default function TransactionsTable() {
   return (
     <Box sx={{ height: 400, width: "100%" }}>
       <DataGrid
-        rows={transcations}
+        rows={groups}
         columns={columns}
         columnVisibilityModel={{
           id: false,
