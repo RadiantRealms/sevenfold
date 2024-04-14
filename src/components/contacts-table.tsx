@@ -10,19 +10,12 @@ import InfoIcon from "@mui/icons-material/Info";
 const columns: GridColDef[] = [
   { field: "id", headerName: "ID", width: 90 },
   {
-    field: "firstName",
-    headerName: "First Name",
-    width: 150,
-  },
-  {
-    field: "middleName",
-    headerName: "Middle Name",
-    width: 150,
-  },
-  {
-    field: "lastName",
-    headerName: "Last Name",
-    width: 150,
+    field: "name",
+    headerName: "Name",
+    width: 200,
+    valueGetter: (params) => {
+      return `${params.row.firstName} ${params.row.middleName} ${params.row.lastName}`;
+    },
   },
   {
     field: "phone",
