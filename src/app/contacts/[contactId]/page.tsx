@@ -19,29 +19,22 @@ export default function ContactDetailsPage({ params }: { params: IParams }) {
   const [isLoading, setLoading] = useState(true);
 
   useEffect(() => {
-    let isMounted = true;
-
     async function fetchContact() {
       try {
         const res = await fetch(`/api/contacts/${params.contactId}`);
+
         if (!res.ok) throw new Error("Failed to fetch");
 
         const data: ContactType = await res.json();
 
-        if (!isMounted) {
-          setContact(data);
-          setLoading(false);
-        }
+        setContact(data);
+        setLoading(false);
       } catch (error) {
         console.error(error);
       }
     }
 
     fetchContact();
-
-    return () => {
-      isMounted = false;
-    };
   }, [params.contactId]);
 
   if (isLoading) {
