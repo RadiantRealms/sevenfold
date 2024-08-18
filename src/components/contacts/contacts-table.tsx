@@ -1,46 +1,37 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import Link from "next/link";
 import Box from "@mui/material/Box";
-import CircularProgress from "@mui/material/CircularProgress";
-import { DataGrid, GridActionsCellItem, GridColDef } from "@mui/x-data-grid";
-import InfoIcon from "@mui/icons-material/Info";
+import { DataGrid, GridColDef } from "@mui/x-data-grid";
+import MuiLink from "@mui/material/Link";
+import LoadingComponent from "../loading-component";
 
 const columns: GridColDef[] = [
   { field: "id", headerName: "ID", width: 90 },
   {
     field: "name",
     headerName: "Name",
-    width: 200,
-    valueGetter: (params) => {
-      return `${params.row.firstName} ${params.row.middleName} ${params.row.lastName}`;
+    flex: 1,
+    valueGetter: (params) =>
+      `${params.row.firstName} ${params.row.middleName} ${params.row.lastName}`,
+    renderCell: (params) => {
+      return (
+        <MuiLink href={`/contacts/${params.row.id}`}>
+          {params.row.firstName} {params.row.middleName} {params.row.lastName}
+        </MuiLink>
+      );
     },
+    sortComparator: (v1, v2) => v1.localeCompare(v2),
   },
   {
     field: "phone",
     headerName: "Phone",
-    width: 150,
+    flex: 1,
   },
   {
     field: "email",
     headerName: "Email",
-    width: 150,
-  },
-  {
-    field: "actions",
-    headerName: "Profile",
-    type: "actions",
-    getActions: (params) => [
-      <GridActionsCellItem
-        key={params.id}
-        icon={<InfoIcon />}
-        label="View Profile"
-        component={Link}
-        // @ts-ignore
-        href={`/contacts/${params.id}`}
-      />,
-    ],
+    flex: 1,
   },
 ];
 
@@ -62,18 +53,7 @@ export default function ContactsTable() {
   }, []);
 
   if (isLoading) {
-    return (
-      <Box
-        sx={{
-          display: "flex",
-          width: "100%",
-          alignItems: "center",
-          justifyContent: "center",
-        }}
-      >
-        <CircularProgress />
-      </Box>
-    );
+    return <LoadingComponent />;
   }
 
   return (

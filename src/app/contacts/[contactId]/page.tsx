@@ -5,8 +5,8 @@ import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
-import DeleteContactButton from "@/components/delete-contact-button";
-import ContactDetails from "@/components/contact-details";
+import DeleteContactButton from "@/components/contacts/delete-contact-button";
+import ContactDetails from "@/components/contacts/contact-details";
 import CircularProgress from "@mui/material/CircularProgress";
 import { ContactType } from "@/app/types";
 
