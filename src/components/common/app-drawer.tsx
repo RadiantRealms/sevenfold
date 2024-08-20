@@ -98,14 +98,14 @@ export default function AppDrawer({
                 <ListItemText primary={"Groups"} />
               </ListItemButton>
             </ListItem>
-            <ListItem disablePadding>
+            {/* <ListItem disablePadding>
               <ListItemButton component="a" href="/transactions">
                 <ListItemIcon>
                   <ReceiptIcon />
                 </ListItemIcon>
                 <ListItemText primary={"Transactions"} />
               </ListItemButton>
-            </ListItem>
+            </ListItem> */}
           </List>
           <Divider />
           <List>

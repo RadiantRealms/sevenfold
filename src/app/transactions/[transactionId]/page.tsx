@@ -1,7 +1,7 @@
 import Button from "@mui/material/Button";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
-import DeleteTransactionButton from "@/components/delete-transaction-button";
-import TransactionDetails from "@/components/transaction-details";
+import DeleteTransactionButton from "@/components/transactions/delete-transaction-button";
+import TransactionDetails from "@/components/transactions/transaction-details";
 import prisma from "../../../lib/prisma";
 
 interface IParams {

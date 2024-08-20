@@ -15,7 +15,7 @@ import Select, { SelectChangeEvent } from "@mui/material/Select";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { TransactionType } from "@/app/types";
 
-export default function RecordTransaction({
+export default function EditTransactionForm({
   transaction,
 }: {
   transaction: TransactionType;

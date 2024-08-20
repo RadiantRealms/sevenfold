@@ -10,6 +10,9 @@ export const GET = withApiAuthRequired(async function (req) {
       where: {
         organizationId,
       },
+      include: {
+        Group: { select: { id: true, name: true } },
+      },
     });
 
     return NextResponse.json(contacts);

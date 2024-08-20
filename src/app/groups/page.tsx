@@ -1,6 +1,6 @@
 import Button from "@mui/material/Button";
 import GroupAddIcon from "@mui/icons-material/GroupAdd";
-import GroupsTable from "@/components/groups-table";
+import GroupsTable from "@/components/groups/groups-table";
 
 export default function GroupsPage() {
   return (

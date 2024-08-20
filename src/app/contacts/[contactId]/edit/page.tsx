@@ -6,7 +6,7 @@ import Button from "@mui/material/Button";
 import CircularProgress from "@mui/material/CircularProgress";
 import Typography from "@mui/material/Typography";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
-import EditContactForm from "@/components/edit-contact-form";
+import EditContactForm from "@/components/contacts/edit-contact-form";
 import { ContactType } from "@/app/types";
 
 interface IParams {

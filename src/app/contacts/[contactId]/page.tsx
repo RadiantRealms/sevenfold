@@ -5,8 +5,8 @@ import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
-import DeleteContactButton from "@/components/delete-contact-button";
-import ContactDetails from "@/components/contact-details";
+import DeleteContactButton from "@/components/contacts/delete-contact-button";
+import ContactDetails from "@/components/contacts/contact-details";
 import CircularProgress from "@mui/material/CircularProgress";
 import { ContactType } from "@/app/types";
 
@@ -19,29 +19,22 @@ export default function ContactDetailsPage({ params }: { params: IParams }) {
   const [isLoading, setLoading] = useState(true);
 
   useEffect(() => {
-    let isMounted = true;
-
     async function fetchContact() {
       try {
         const res = await fetch(`/api/contacts/${params.contactId}`);
+
         if (!res.ok) throw new Error("Failed to fetch");
 
         const data: ContactType = await res.json();
 
-        if (!isMounted) {
-          setContact(data);
-          setLoading(false);
-        }
+        setContact(data);
+        setLoading(false);
       } catch (error) {
         console.error(error);
       }
     }
 
     fetchContact();
-
-    return () => {
-      isMounted = false;
-    };
   }, [params.contactId]);
 
   if (isLoading) {

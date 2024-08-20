@@ -23,3 +23,35 @@ export const GET = withApiAuthRequired(async function (req) {
     );
   }
 });
+
+export const POST = withApiAuthRequired(async function (req: Request) {
+  try {
+    const session = await getSession();
+    const organizationId = session?.user.org_id;
+    const { name } = await req.json();
+    const groupExists = await prisma.group.findFirst({
+      where: { organizationId, name },
+    });
+
+    if (groupExists) {
+      return NextResponse.json(
+        { error: "Group with that name already exists" },
+        { status: 409 }
+      );
+    }
+
+    const group = await prisma.group.create({
+      data: {
+        organizationId,
+        name,
+      },
+    });
+
+    return NextResponse.json(group);
+  } catch (error: any) {
+    return NextResponse.json(
+      { error: error.message || "Internal Server Error" },
+      { status: error.status || 500 }
+    );
+  }
+});

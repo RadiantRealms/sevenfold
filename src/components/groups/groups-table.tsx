@@ -1,44 +1,33 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import Link from "next/link";
+import MuiLink from "@mui/material/Link";
 import Box from "@mui/material/Box";
 import CircularProgress from "@mui/material/CircularProgress";
-import { DataGrid, GridActionsCellItem, GridColDef } from "@mui/x-data-grid";
-import InfoIcon from "@mui/icons-material/Info";
+import { DataGrid, GridColDef } from "@mui/x-data-grid";
 
 const columns: GridColDef[] = [
-  { field: "id", headerName: "ID", width: 90 },
+  { field: "id", headerName: "ID" },
   {
     field: "name",
     headerName: "Group Name",
-    width: 150,
+    flex: 1,
+    renderCell: (params) => {
+      return (
+        <MuiLink href={`/groups/${params.row.id}`}>{params.row.name}</MuiLink>
+      );
+    },
   },
   {
     field: "contacts",
     headerName: "Member Count",
-    width: 150,
+    flex: 1,
     renderCell: (params) => {
       if (!params.value) {
         return params.value;
       }
       return params.value.length;
     },
-  },
-  {
-    field: "actions",
-    headerName: "Info",
-    type: "actions",
-    getActions: (params) => [
-      <GridActionsCellItem
-        key={params.id}
-        icon={<InfoIcon />}
-        label="Group Actions"
-        component={Link}
-        // @ts-ignore
-        href={`/groups/${params.id}`}
-      />,
-    ],
   },
 ];
 

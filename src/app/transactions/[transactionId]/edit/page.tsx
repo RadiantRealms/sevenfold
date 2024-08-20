@@ -1,6 +1,6 @@
 import Button from "@mui/material/Button";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
-import EditTransactionForm from "@/components/edit-transaction-form";
+import EditTransactionForm from "@/components/transactions/edit-transaction-form";
 import prisma from "../../../../lib/prisma";
 
 interface IParams {
