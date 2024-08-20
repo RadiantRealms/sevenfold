@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 
 import CssBaseline from "@mui/material/CssBaseline";
-import AppDrawer from "@/components/app-drawer";
+import AppDrawer from "@/components/common/app-drawer";
 import Providers from "@/providers";
 
 export const metadata: Metadata = {

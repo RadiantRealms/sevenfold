@@ -1,5 +1,5 @@
 import Grid from "@mui/material/Unstable_Grid2";
-import DashboardHeader from "@/components/dashboard-header";
+import DashboardHeader from "./dashboard-header";
 
 import type { UserProfile } from "@auth0/nextjs-auth0/client";
 

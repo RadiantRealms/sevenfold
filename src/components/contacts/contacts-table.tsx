@@ -4,10 +4,10 @@ import { useEffect, useState } from "react";
 import Box from "@mui/material/Box";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import MuiLink from "@mui/material/Link";
-import LoadingComponent from "../loading-component";
+import LoadingComponent from "../common/loading-component";
 
 const columns: GridColDef[] = [
-  { field: "id", headerName: "ID", width: 90 },
+  { field: "id", headerName: "ID" },
   {
     field: "name",
     headerName: "Name",
@@ -32,6 +32,24 @@ const columns: GridColDef[] = [
     field: "email",
     headerName: "Email",
     flex: 1,
+  },
+  {
+    field: "group",
+    headerName: "Group",
+    flex: 1,
+    valueGetter: (params) => `${params.row.Group?.name}`,
+    renderCell: (params) => {
+      if (params.row.Group?.name) {
+        return (
+          <MuiLink href={`/groups/${params.row.Group?.id}`}>
+            {params.row.Group?.name}
+          </MuiLink>
+        );
+      } else {
+        return "N/A";
+      }
+    },
+    sortComparator: (v1, v2) => v1.localeCompare(v2),
   },
 ];
 
