@@ -7,7 +7,7 @@ import Portal from "@/components/portal";
 export default function PortalPage() {
   const { user } = useUser();
 
-  if (user) {
+  if (user?.sub) {
     redirect("/dashboard");
   }
 

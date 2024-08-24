@@ -5,9 +5,9 @@ Sevenfold is a web application built with Next.js, Auth0, and Material UI to hel
 ## Features:
 
 - Secure Login with Auth0
-- Manage Members (Create, Edit, View)
+- Manage Members (Create, Edit, View, Sort)
 - Track Transactions (Donations & Expenses)
-- Group Management (Coming Soon)
+- Group Management
 - Plaid Integration for Automated Transaction Retrieval (Planned)
 
 ## Prerequisites:
@@ -27,7 +27,7 @@ Sevenfold is a web application built with Next.js, Auth0, and Material UI to hel
 
 ### Clone & Install:
 
-- Clone the repository: `git clone git@github.com:glwjr/sevenfold.git`
+- Clone the repository: `git clone git@github.com:RadiantRealms/sevenfold.git`
 - Navigate to the project directory: `cd sevenfold`
 - Install dependencies: `npm install`
 
@@ -66,7 +66,7 @@ Open http://localhost:3000 in your web browser.
 
 **Notes:**
 
-- New user registrations are placed in the "sandbox" organization by default.
+- New user registrations are placed in the "Sandbox" organization by default.
 - Group management and Plaid integration are planned features.
 
 **Sources:**
