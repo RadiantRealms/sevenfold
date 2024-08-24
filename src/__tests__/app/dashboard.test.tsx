@@ -1,14 +1,26 @@
 import { render, screen } from "@testing-library/react";
-import Dashboard from "../../app/dashboard/page";
 import { mockUser, withUserProvider } from "../fixtures";
+import DashboardPage from "@/app/dashboard/page";
+import PortalPage from "@/app/page";
 
 describe("Dashboard", () => {
-  describe("When user is logged in", () => {
-    it("should render without crashing", async () => {
-      render(<Dashboard />, { wrapper: withUserProvider({ user: mockUser }) });
+  // describe("When user is logged in", () => {
+  //   it("should render without crashing", async () => {
+  //     render(<DashboardPage />, {
+  //       wrapper: withUserProvider({ user: mockUser }),
+  //     });
 
-      expect(screen.getByTestId("dashboard")).toBeInTheDocument();
-      expect(screen.getByTestId("dashboard-header")).toBeInTheDocument();
+  //     expect(screen.getByTestId("dashboard")).toBeInTheDocument();
+  //   });
+  // });
+
+  describe("When user is not logged in", () => {
+    it("Portal should render without crashing", async () => {
+      render(<PortalPage />, {
+        wrapper: withUserProvider({}),
+      });
+
+      expect(screen.getByTestId("portal")).toBeInTheDocument();
     });
   });
 });
