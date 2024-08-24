@@ -1,4 +1,4 @@
-import { Prisma, Group, Transaction } from "@prisma/client";
+import { Prisma, Transaction } from "@prisma/client";
 
 export type ContactType = Prisma.ContactGetPayload<{
   include: { Group: true };

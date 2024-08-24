@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
@@ -11,17 +11,26 @@ import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
-import CircularProgress from "@mui/material/CircularProgress";
 import { ContactType, GroupType } from "@/app/types";
 
-export default function EditContactForm({ contact }: { contact: ContactType }) {
+export default function EditContactForm({
+  contact,
+  groups,
+}: {
+  contact: ContactType;
+  groups: GroupType[];
+}) {
   const router = useRouter();
-  const [groupList, setGroupList] = useState<GroupType[]>([]);
-  const [associatedGroupId, setAssociatedGroupId] = useState(contact.groupId);
-  const [isLoading, setLoading] = useState(true);
+  const [state, setState] = useState<{
+    associatedGroupId: string;
+    error: string | null;
+  }>({
+    associatedGroupId: contact.groupId as string,
+    error: null,
+  });
 
   const handleAssociatedGroupChange = (event: SelectChangeEvent) => {
-    setAssociatedGroupId(event.target.value);
+    setState({ associatedGroupId: event.target.value, error: null });
   };
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -39,10 +48,10 @@ export default function EditContactForm({ contact }: { contact: ContactType }) {
         zip: data.get("zip"),
         phone: data.get("phone"),
         email: data.get("email"),
-        groupId: associatedGroupId,
+        groupId: state.associatedGroupId,
       };
 
-      await fetch(`/api/contacts/${contact.id}`, {
+      const res = await fetch(`/api/contacts/${contact.id}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -50,39 +59,13 @@ export default function EditContactForm({ contact }: { contact: ContactType }) {
         body: JSON.stringify(body),
       });
 
+      if (!res.ok) throw new Error("Failed to update contact");
+
       router.push(`/contacts/${contact.id}`);
     } catch (error) {
-      console.error(error);
+      setState({ ...state, error: (error as Error).message });
     }
   };
-
-  useEffect(() => {
-    try {
-      fetch("/api/groups")
-        .then((res) => res.json())
-        .then((data) => {
-          setGroupList(data);
-          setLoading(false);
-        });
-    } catch (error) {
-      console.error(error);
-    }
-  }, []);
-
-  if (isLoading) {
-    return (
-      <Box
-        sx={{
-          display: "flex",
-          width: "100%",
-          alignItems: "center",
-          justifyContent: "center",
-        }}
-      >
-        <CircularProgress />
-      </Box>
-    );
-  }
 
   return (
     <Box
@@ -197,16 +180,18 @@ export default function EditContactForm({ contact }: { contact: ContactType }) {
               <Select
                 labelId="associated-group-select-label"
                 id="associated-group-select"
-                value={associatedGroupId || ""}
+                value={state.associatedGroupId ?? ""}
                 label="Associated Group"
                 onChange={handleAssociatedGroupChange}
               >
-                <MenuItem value={""}>None</MenuItem>
-                {groupList.map((group: GroupType) => (
-                  <MenuItem key={group.id} value={group.id}>
-                    {group.name}
-                  </MenuItem>
-                ))}
+                <MenuItem value="">None</MenuItem>
+                {groups
+                  .sort((a, b) => a.name.localeCompare(b.name))
+                  .map((group: GroupType) => (
+                    <MenuItem key={group.id} value={group.id}>
+                      {group.name}
+                    </MenuItem>
+                  ))}
               </Select>
             </FormControl>
           </Grid>
@@ -228,6 +213,11 @@ export default function EditContactForm({ contact }: { contact: ContactType }) {
         >
           Cancel
         </Button>
+        {state.error && (
+          <Typography variant="body2" color="error" textAlign="center">
+            {state.error}
+          </Typography>
+        )}
       </Box>
     </Box>
   );

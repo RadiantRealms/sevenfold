@@ -1,56 +1,66 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import EditIcon from "@mui/icons-material/Edit";
 import GroupMembersTable from "@/components/groups/group-members-table";
-import ContactDetails from "@/components/contacts/contact-details";
-import CircularProgress from "@mui/material/CircularProgress";
+import LoadingComponent from "@/components/common/loading-component";
+import ErrorMessage from "@/components/common/error-message";
 import { GroupType } from "@/app/types";
+import DeleteGroupButton from "@/components/groups/delete-group-button";
 
 interface IParams {
   groupId: string;
 }
 
 export default function GroupDetailsPage({ params }: { params: IParams }) {
-  const [group, setGroup] = useState<GroupType | null>(null);
-  const [isLoading, setLoading] = useState(true);
+  const [state, setState] = useState<{
+    group: GroupType | null;
+    isLoading: boolean;
+    error: string | null;
+  }>({
+    group: null,
+    isLoading: true,
+    error: null,
+  });
 
   useEffect(() => {
     async function fetchGroup() {
       try {
         const res = await fetch(`/api/groups/${params.groupId}`);
 
-        if (!res.ok) throw new Error("Failed to fetch");
+        if (!res.ok) throw new Error("Failed to fetch group with that ID");
 
         const data: GroupType = await res.json();
 
-        setGroup(data);
-        setLoading(false);
+        setState({ group: data, isLoading: false, error: null });
       } catch (error) {
-        console.error(error);
+        setState({
+          group: null,
+          isLoading: false,
+          error: (error as Error).message,
+        });
       }
     }
 
     fetchGroup();
   }, [params.groupId]);
 
-  if (isLoading) {
+  if (state.isLoading)
     return (
-      <Box
-        sx={{
-          display: "flex",
-          width: "100%",
-          alignItems: "center",
-          justifyContent: "center",
-        }}
-      >
-        <CircularProgress />
-      </Box>
+      <main>
+        <LoadingComponent />
+      </main>
     );
-  }
+
+  if (state.error)
+    return (
+      <main>
+        <ErrorMessage error={state.error} />
+      </main>
+    );
 
   return (
     <main>
@@ -63,16 +73,23 @@ export default function GroupDetailsPage({ params }: { params: IParams }) {
       >
         View All Groups
       </Button>
-      {group ? (
+      {state.group && (
         <>
           <Typography component="h1" variant="h5" sx={{ mb: 2 }}>
-            {group.name}
+            {state.group.name}
           </Typography>
-          <GroupMembersTable group={group} />
-          {/* <DeleteGroupButton groupId={params.groupId} /> */}
+          <Button
+            component="a"
+            href={`/groups/${state.group.id}/edit`}
+            variant="contained"
+            startIcon={<EditIcon />}
+            sx={{ mt: 1, mb: 3 }}
+          >
+            Edit Group
+          </Button>
+          <GroupMembersTable group={state.group} />
+          <DeleteGroupButton groupId={state.group.id} />
         </>
-      ) : (
-        <Typography variant="h6">Group not found</Typography>
       )}
     </main>
   );

@@ -6,7 +6,7 @@ import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import EditContactForm from "@/components/contacts/edit-contact-form";
 import LoadingComponent from "@/components/common/loading-component";
 import ErrorMessage from "@/components/common/error-message";
-import { ContactType } from "@/app/types";
+import { ContactType, GroupType } from "@/app/types";
 
 interface IParams {
   contactId: string;
@@ -15,33 +15,41 @@ interface IParams {
 export default function EditContactPage({ params }: { params: IParams }) {
   const [state, setState] = useState<{
     contact: ContactType | null;
+    groups: GroupType[];
     isLoading: boolean;
     error: string | null;
   }>({
     contact: null,
+    groups: [],
     isLoading: true,
     error: null,
   });
 
   useEffect(() => {
-    async function fetchContact() {
+    async function fetchData() {
       try {
-        const res = await fetch(`/api/contacts/${params.contactId}`);
-        if (!res.ok) throw new Error("Failed to fetch contact");
+        const fetchContact = await fetch(`/api/contacts/${params.contactId}`);
+        if (!fetchContact.ok) throw new Error("Failed to fetch contact");
 
-        const data: ContactType = await res.json();
+        const contact: ContactType = await fetchContact.json();
 
-        setState({ contact: data, isLoading: false, error: null });
+        const fetchGroups = await fetch("/api/groups");
+        if (!fetchGroups.ok) throw new Error("Failed to fetch groups");
+
+        const groups: GroupType[] = await fetchGroups.json();
+
+        setState({ contact, groups, isLoading: false, error: null });
       } catch (error) {
         setState({
           contact: null,
+          groups: [],
           isLoading: false,
           error: (error as Error).message,
         });
       }
     }
 
-    fetchContact();
+    fetchData();
   }, [params.contactId]);
 
   if (state.isLoading)
@@ -71,7 +79,7 @@ export default function EditContactPage({ params }: { params: IParams }) {
           >
             Return to contact profile
           </Button>
-          <EditContactForm contact={state.contact} />
+          <EditContactForm contact={state.contact} groups={state.groups} />
         </>
       )}
     </main>

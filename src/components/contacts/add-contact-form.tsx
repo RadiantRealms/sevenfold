@@ -11,15 +11,20 @@ import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
-import { GroupType } from "@/app/types";
+import { ContactType, GroupType } from "@/app/types";
 
 export default function AddContactForm({ groups }: { groups: GroupType[] }) {
   const router = useRouter();
-  const [associatedGroupId, setAssociatedGroupId] = useState<string>("");
-  const [error, setError] = useState<string | null>(null);
+  const [state, setState] = useState<{
+    associatedGroupId: string;
+    error: string | null;
+  }>({
+    associatedGroupId: "",
+    error: null,
+  });
 
   const handleAssociatedGroupChange = (event: SelectChangeEvent) => {
-    setAssociatedGroupId(event.target.value as string);
+    setState({ associatedGroupId: event.target.value, error: null });
   };
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -37,7 +42,7 @@ export default function AddContactForm({ groups }: { groups: GroupType[] }) {
         zip: data.get("zip"),
         phone: data.get("phone"),
         email: data.get("email"),
-        groupId: associatedGroupId,
+        groupId: state.associatedGroupId,
       };
 
       const res = await fetch("/api/contacts", {
@@ -48,17 +53,13 @@ export default function AddContactForm({ groups }: { groups: GroupType[] }) {
         body: JSON.stringify(body),
       });
 
-      if (!res.ok) {
-        const { error } = await res.json();
-        setError(error);
-        return;
-      }
+      if (!res.ok) throw new Error("Failed to create new contact");
 
-      const contact = await res.json();
+      const contact: ContactType = await res.json();
 
       router.push(`/contacts/${contact.id}`);
     } catch (error) {
-      console.error(error);
+      setState({ associatedGroupId: "", error: (error as Error).message });
     }
   };
 
@@ -147,16 +148,18 @@ export default function AddContactForm({ groups }: { groups: GroupType[] }) {
               <Select
                 labelId="associated-group-select-label"
                 id="associated-group-select"
-                value={associatedGroupId ?? ""}
+                value={state.associatedGroupId ?? ""}
                 label="Associated Group"
                 onChange={handleAssociatedGroupChange}
               >
                 <MenuItem value="">None</MenuItem>
-                {groups.map((group: GroupType) => (
-                  <MenuItem key={group.id} value={group.id}>
-                    {group.name}
-                  </MenuItem>
-                ))}
+                {groups
+                  .sort((a, b) => a.name.localeCompare(b.name))
+                  .map((group: GroupType) => (
+                    <MenuItem key={group.id} value={group.id}>
+                      {group.name}
+                    </MenuItem>
+                  ))}
               </Select>
             </FormControl>
           </Grid>
@@ -178,9 +181,9 @@ export default function AddContactForm({ groups }: { groups: GroupType[] }) {
         >
           Cancel
         </Button>
-        {error && (
+        {state.error && (
           <Typography variant="body2" color="error" textAlign="center">
-            {error}
+            {state.error}
           </Typography>
         )}
       </Box>
