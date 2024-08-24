@@ -17,7 +17,7 @@ export default function Error({
   }, [error]);
 
   return (
-    <div>
+    <main>
       <Typography variant="h6">Something went wrong!</Typography>
       <Button
         variant="contained"
@@ -26,6 +26,6 @@ export default function Error({
       >
         Return to dashboard
       </Button>
-    </div>
+    </main>
   );
 }

@@ -1,10 +1,7 @@
-"use client";
-
-import { useEffect, useState } from "react";
-import MuiLink from "@mui/material/Link";
 import Box from "@mui/material/Box";
-import CircularProgress from "@mui/material/CircularProgress";
+import MuiLink from "@mui/material/Link";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
+import { GroupType } from "@/app/types";
 
 const columns: GridColDef[] = [
   { field: "id", headerName: "ID" },
@@ -22,47 +19,11 @@ const columns: GridColDef[] = [
     field: "contacts",
     headerName: "Member Count",
     flex: 1,
-    renderCell: (params) => {
-      if (!params.value) {
-        return params.value;
-      }
-      return params.value.length;
-    },
+    valueGetter: (params) => params.value.length,
   },
 ];
 
-export default function GroupsTable() {
-  const [groups, setGroups] = useState([]);
-  const [isLoading, setLoading] = useState(true);
-
-  useEffect(() => {
-    try {
-      fetch("/api/groups")
-        .then((res) => res.json())
-        .then((data) => {
-          setGroups(data);
-          setLoading(false);
-        });
-    } catch (error) {
-      console.error(error);
-    }
-  }, []);
-
-  if (isLoading) {
-    return (
-      <Box
-        sx={{
-          display: "flex",
-          width: "100%",
-          alignItems: "center",
-          justifyContent: "center",
-        }}
-      >
-        <CircularProgress />
-      </Box>
-    );
-  }
-
+export default function GroupsTable({ groups }: { groups: GroupType[] }) {
   return (
     <Box sx={{ height: 400, width: "100%" }}>
       <DataGrid

@@ -1,7 +1,9 @@
+"use client";
+
 import Box from "@mui/material/Box";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import MuiLink from "@mui/material/Link";
-import { ContactType } from "@/app/types";
+import { GroupType } from "@/app/types";
 
 const columns: GridColDef[] = [
   { field: "id", headerName: "ID" },
@@ -30,35 +32,13 @@ const columns: GridColDef[] = [
     headerName: "Email",
     flex: 1,
   },
-  {
-    field: "group",
-    headerName: "Associated Group",
-    flex: 1,
-    valueGetter: (params) => `${params.row.Group?.name}`,
-    renderCell: (params) => {
-      if (params.row.Group?.name) {
-        return (
-          <MuiLink href={`/groups/${params.row.Group?.id}`}>
-            {params.row.Group?.name}
-          </MuiLink>
-        );
-      } else {
-        return "N/A";
-      }
-    },
-    sortComparator: (v1, v2) => v1.localeCompare(v2),
-  },
 ];
 
-export default function ContactsTable({
-  contacts,
-}: {
-  contacts: ContactType[];
-}) {
+export default function GroupMembersTable({ group }: { group: GroupType }) {
   return (
     <Box sx={{ height: 400, width: "100%" }}>
       <DataGrid
-        rows={contacts}
+        rows={group.contacts}
         columns={columns}
         columnVisibilityModel={{
           id: false,

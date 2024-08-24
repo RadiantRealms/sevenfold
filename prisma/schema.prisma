@@ -44,7 +44,7 @@ model Contact {
   phone          String?
   email          String?
   transactions   Transaction[]
-  Group          Group?        @relation(fields: [groupId], references: [id])
+  Group          Group?        @relation(fields: [groupId], references: [id], onDelete: SetNull)
   groupId        String?
 
   @@map(name: "contacts")

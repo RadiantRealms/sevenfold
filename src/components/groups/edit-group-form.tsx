@@ -6,32 +6,41 @@ import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
+import { GroupType } from "@/app/types";
 
-export default function AddGroupForm() {
+export default function EditGroupForm({ group }: { group: GroupType }) {
   const router = useRouter();
-  const [error, setError] = useState<string | null>(null);
+  const [state, setState] = useState<{
+    groupName: string;
+    error: string | null;
+  }>({
+    groupName: group.name,
+    error: null,
+  });
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    const formData = new FormData(event.currentTarget);
-    const name = formData.get("name") as string;
-
     try {
-      const res = await fetch("/api/groups", {
-        method: "POST",
+      const formData = new FormData(event.currentTarget);
+      const name = formData.get("name");
+      const body = { name };
+
+      const res = await fetch(`/api/groups/${group.id}`, {
+        method: "PUT",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ name }),
+        body: JSON.stringify(body),
       });
 
-      if (!res.ok) throw new Error("Failed to create new group");
+      if (!res.ok) throw new Error("Failed to update group");
 
-      const group = await res.json();
-      router.push(`/groups/${group.id}`);
+      const updatedGroup = await res.json();
+
+      router.push(`/groups/${updatedGroup.id}`);
     } catch (error) {
-      setError((error as Error).message);
+      setState({ ...state, error: (error as Error).message });
     }
   };
 
@@ -45,7 +54,7 @@ export default function AddGroupForm() {
       }}
     >
       <Typography component="h1" variant="h5">
-        Add Group
+        Edit Group
       </Typography>
       <Box
         component="form"
@@ -55,6 +64,7 @@ export default function AddGroupForm() {
         <TextField
           fullWidth
           required
+          defaultValue={group.name}
           id="name"
           label="Group Name"
           name="name"
@@ -77,9 +87,9 @@ export default function AddGroupForm() {
         >
           Cancel
         </Button>
-        {error && (
+        {state.error && (
           <Typography variant="body2" color="error" textAlign="center">
-            {error}
+            {state.error}
           </Typography>
         )}
       </Box>

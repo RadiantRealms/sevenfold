@@ -1,6 +1,8 @@
 import { NextResponse } from "next/server";
 import { withApiAuthRequired, getSession } from "@auth0/nextjs-auth0";
-import prisma from "../../../lib/prisma";
+import { z } from "zod";
+import prisma from "@/lib/prisma";
+import { createContactSchema } from "@/lib/schemas/contact";
 
 export const GET = withApiAuthRequired(async function (req) {
   try {
@@ -28,41 +30,26 @@ export const POST = withApiAuthRequired(async function (req: Request) {
   try {
     const session = await getSession();
     const organizationId = session?.user.org_id;
-    const {
-      firstName,
-      middleName,
-      lastName,
-      address1,
-      address2,
-      city,
-      state,
-      zip,
-      phone,
-      email,
-      groupId,
-    } = await req.json();
+    const contactData = createContactSchema.parse(await req.json());
+
     const contact = await prisma.contact.create({
       data: {
+        ...contactData,
         organizationId,
-        firstName,
-        middleName,
-        lastName,
-        address1,
-        address2,
-        city,
-        state,
-        zip,
-        phone,
-        email,
-        groupId,
       },
     });
 
     return NextResponse.json(contact);
   } catch (error: any) {
-    return NextResponse.json(
-      { error: error.message },
-      { status: error.status || 500 }
-    );
+    if (error instanceof z.ZodError) {
+      return NextResponse.json(
+        { error: error.issues[0].message },
+        { status: 400 }
+      );
+    }
+
+    const statusCode = error?.status || 500;
+    const message = error?.message || "Internal Server Error";
+    return NextResponse.json({ error: message }, { status: statusCode });
   }
 });

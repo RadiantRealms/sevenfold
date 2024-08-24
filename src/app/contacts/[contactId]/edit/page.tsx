@@ -1,66 +1,74 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
-import CircularProgress from "@mui/material/CircularProgress";
-import Typography from "@mui/material/Typography";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import EditContactForm from "@/components/contacts/edit-contact-form";
-import { ContactType } from "@/app/types";
+import LoadingComponent from "@/components/common/loading-component";
+import ErrorMessage from "@/components/common/error-message";
+import { ContactType, GroupType } from "@/app/types";
 
 interface IParams {
   contactId: string;
 }
 
 export default function EditContactPage({ params }: { params: IParams }) {
-  const [contact, setContact] = useState<ContactType | null>(null);
-  const [isLoading, setLoading] = useState(true);
+  const [state, setState] = useState<{
+    contact: ContactType | null;
+    groups: GroupType[];
+    isLoading: boolean;
+    error: string | null;
+  }>({
+    contact: null,
+    groups: [],
+    isLoading: true,
+    error: null,
+  });
 
   useEffect(() => {
-    let isMounted = true;
-
-    async function fetchContact() {
+    async function fetchData() {
       try {
-        const res = await fetch(`/api/contacts/${params.contactId}`);
-        if (!res.ok) throw new Error("Failed to fetch");
+        const fetchContact = await fetch(`/api/contacts/${params.contactId}`);
+        if (!fetchContact.ok) throw new Error("Failed to fetch contact");
 
-        const data: ContactType = await res.json();
+        const contact: ContactType = await fetchContact.json();
 
-        if (!isMounted) {
-          setContact(data);
-          setLoading(false);
-        }
+        const fetchGroups = await fetch("/api/groups");
+        if (!fetchGroups.ok) throw new Error("Failed to fetch groups");
+
+        const groups: GroupType[] = await fetchGroups.json();
+
+        setState({ contact, groups, isLoading: false, error: null });
       } catch (error) {
-        console.error(error);
+        setState({
+          contact: null,
+          groups: [],
+          isLoading: false,
+          error: (error as Error).message,
+        });
       }
     }
 
-    fetchContact();
-
-    return () => {
-      isMounted = false;
-    };
+    fetchData();
   }, [params.contactId]);
 
-  if (isLoading) {
+  if (state.isLoading)
     return (
-      <Box
-        sx={{
-          display: "flex",
-          width: "100%",
-          alignItems: "center",
-          justifyContent: "center",
-        }}
-      >
-        <CircularProgress />
-      </Box>
+      <main>
+        <LoadingComponent />
+      </main>
     );
-  }
+
+  if (state.error)
+    return (
+      <main>
+        <ErrorMessage error={state.error} />
+      </main>
+    );
 
   return (
     <main>
-      {contact ? (
+      {state.contact && (
         <>
           <Button
             component="a"
@@ -71,20 +79,7 @@ export default function EditContactPage({ params }: { params: IParams }) {
           >
             Return to contact profile
           </Button>
-          <EditContactForm contact={contact} />
-        </>
-      ) : (
-        <>
-          <Button
-            component="a"
-            href="/contacts"
-            variant="outlined"
-            startIcon={<ArrowBackIcon />}
-            sx={{ mb: 3 }}
-          >
-            View All Contacts
-          </Button>
-          <Typography variant="h6">Contact not found</Typography>
+          <EditContactForm contact={state.contact} groups={state.groups} />
         </>
       )}
     </main>

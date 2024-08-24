@@ -6,21 +6,17 @@ export const GET = withApiAuthRequired(async function (req, { params }) {
   try {
     const session = await getSession();
     const organizationId = session?.user.org_id;
-    const contact = await prisma.contact.findUnique({
+    const group = await prisma.group.findUnique({
       where: {
         organizationId,
-        id: params?.contactId as string,
+        id: params?.groupId as string,
       },
       include: {
-        Group: true,
+        contacts: true,
       },
     });
 
-    if (!contact) {
-      throw new Error("Contact not found");
-    }
-
-    return NextResponse.json(contact);
+    return NextResponse.json(group);
   } catch (error: any) {
     return NextResponse.json(
       { error: error.message },
@@ -33,47 +29,25 @@ export const PUT = withApiAuthRequired(async function (req, { params }) {
   try {
     const session = await getSession();
     const organizationId = session?.user.org_id;
-    const {
-      firstName,
-      middleName,
-      lastName,
-      address1,
-      address2,
-      city,
-      state,
-      zip,
-      phone,
-      email,
-      groupId,
-    } = await req.json();
-    const contact = await prisma.contact.update({
+    const { name } = await req.json();
+    const group = await prisma.group.update({
       where: {
         organizationId,
-        id: params?.contactId as string,
+        id: params?.groupId as string,
       },
       data: {
-        firstName,
-        middleName,
-        lastName,
-        address1,
-        address2,
-        city,
-        state,
-        zip,
-        phone,
-        email,
-        groupId: groupId === "" ? null : groupId,
+        name,
       },
     });
 
-    if (!contact) {
+    if (!group) {
       return NextResponse.json(
-        { error: "Contact could not be updated." },
+        { error: "Group could not be updated." },
         { status: 400 }
       );
     }
 
-    return NextResponse.json(contact);
+    return NextResponse.json(group);
   } catch (error: any) {
     return NextResponse.json(
       { error: error.message },
@@ -86,21 +60,21 @@ export const DELETE = withApiAuthRequired(async function (req, { params }) {
   try {
     const session = await getSession();
     const organizationId = session?.user.org_id;
-    const contact = await prisma.contact.delete({
+    const group = await prisma.group.delete({
       where: {
         organizationId,
-        id: params?.contactId as string,
+        id: params?.groupId as string,
       },
     });
 
-    if (!contact) {
+    if (!group) {
       return NextResponse.json(
-        { error: "Contact could not be deleted." },
+        { error: "Group could not be deleted." },
         { status: 400 }
       );
     }
 
-    return NextResponse.json(contact);
+    return NextResponse.json(group);
   } catch (error: any) {
     return NextResponse.json(
       { error: error.message },

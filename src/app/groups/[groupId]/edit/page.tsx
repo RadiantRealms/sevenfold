@@ -1,43 +1,46 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import AddContactForm from "@/components/contacts/add-contact-form";
+import EditGroupForm from "@/components/groups/edit-group-form";
 import LoadingComponent from "@/components/common/loading-component";
 import ErrorMessage from "@/components/common/error-message";
 import { GroupType } from "@/app/types";
 
-export default function AddContactPage() {
+interface IParams {
+  groupId: string;
+}
+
+export default function EditGroupPage({ params }: { params: IParams }) {
   const [state, setState] = useState<{
-    groups: GroupType[];
+    group: GroupType | null;
     isLoading: boolean;
     error: string | null;
   }>({
-    groups: [],
+    group: null,
     isLoading: true,
     error: null,
   });
 
   useEffect(() => {
-    async function fetchGroups() {
+    async function fetchData() {
       try {
-        const res = await fetch("/api/groups");
+        const fetchGroup = await fetch(`/api/groups/${params.groupId}`);
+        if (!fetchGroup.ok) throw new Error("Failed to fetch group");
 
-        if (!res.ok) throw new Error("Failed to fetch groups");
+        const group: GroupType = await fetchGroup.json();
 
-        const data: GroupType[] = await res.json();
-
-        setState({ groups: data, isLoading: false, error: null });
+        setState({ group, isLoading: false, error: null });
       } catch (error) {
         setState({
-          groups: [],
+          group: null,
           isLoading: false,
           error: (error as Error).message,
         });
       }
     }
 
-    fetchGroups();
-  }, []);
+    fetchData();
+  }, [params.groupId]);
 
   if (state.isLoading)
     return (
@@ -53,9 +56,5 @@ export default function AddContactPage() {
       </main>
     );
 
-  return (
-    <main>
-      <AddContactForm groups={state.groups} />
-    </main>
-  );
+  return <main>{state.group && <EditGroupForm group={state.group} />}</main>;
 }
