@@ -9,3 +9,8 @@ export type GroupType = Prisma.GroupGetPayload<{
 }>;
 
 export type TransactionType = Transaction;
+
+export type DashboardDataType = {
+  contactCount: number;
+  groupCount: number;
+};

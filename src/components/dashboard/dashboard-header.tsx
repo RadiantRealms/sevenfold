@@ -6,11 +6,12 @@ import CardMedia from "@mui/material/CardMedia";
 import type { UserProfile } from "@auth0/nextjs-auth0/client";
 
 export default function DashboardHeader({ user }: { user: UserProfile }) {
-  const orgName = user.org_name as string;
+  const orgDisplayName = user.orgDisplayName as string;
 
   return (
     <Card
       sx={{ display: "flex", alignItems: "center", px: 2 }}
+      variant="outlined"
       data-testid="dashboard-header"
     >
       <CardMedia
@@ -23,7 +24,7 @@ export default function DashboardHeader({ user }: { user: UserProfile }) {
           Welcome, {user.name}!
         </Typography>
         <Typography variant="subtitle1" component="div">
-          You are logged into {orgName}.
+          You are logged into {orgDisplayName}.
         </Typography>
       </CardContent>
     </Card>
