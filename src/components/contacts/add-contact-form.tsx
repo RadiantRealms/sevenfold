@@ -11,6 +11,7 @@ import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
+import { MuiTelInput } from "mui-tel-input";
 import { ContactType, GroupType } from "@/app/types";
 
 const states = [
@@ -69,14 +70,23 @@ const states = [
 export default function AddContactForm({ groups }: { groups: GroupType[] }) {
   const router = useRouter();
   const [state, setState] = useState<{
+    phone: string;
     selectedState: string;
     associatedGroupId: string | null;
     error: string | null;
   }>({
+    phone: "",
     selectedState: "",
     associatedGroupId: null,
     error: null,
   });
+
+  const handlePhoneChange = (phoneValue: string) => {
+    setState({
+      ...state,
+      phone: phoneValue,
+    });
+  };
 
   const handleStateChange = (event: SelectChangeEvent) => {
     setState({
@@ -105,7 +115,7 @@ export default function AddContactForm({ groups }: { groups: GroupType[] }) {
         city: data.get("city"),
         state: state.selectedState,
         zip: data.get("zip"),
-        phone: data.get("phone"),
+        phone: state.phone,
         email: data.get("email"),
         groupId: state.associatedGroupId,
       };
@@ -171,7 +181,14 @@ export default function AddContactForm({ groups }: { groups: GroupType[] }) {
             />
           </Grid>
           <Grid xs={6}>
-            <TextField fullWidth id="phone" label="Phone Number" name="phone" />
+            <MuiTelInput
+              fullWidth
+              label="Phone Number"
+              forceCallingCode
+              defaultCountry="US"
+              value={state.phone}
+              onChange={handlePhoneChange}
+            />
           </Grid>
           <Grid xs={6}>
             <TextField

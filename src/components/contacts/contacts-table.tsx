@@ -64,6 +64,9 @@ export default function ContactsTable({
           id: false,
         }}
         initialState={{
+          sorting: {
+            sortModel: [{ field: "name", sort: "asc" }],
+          },
           pagination: {
             paginationModel: {
               pageSize: 5,
