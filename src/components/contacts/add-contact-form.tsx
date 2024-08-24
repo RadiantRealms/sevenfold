@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
@@ -13,10 +13,10 @@ import FormControl from "@mui/material/FormControl";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
 import { GroupType } from "@/app/types";
 
-export default function AddContactForm() {
+export default function AddContactForm({ groups }: { groups: GroupType[] }) {
   const router = useRouter();
-  const [groupList, setGroupList] = useState([]);
-  const [associatedGroupId, setAssociatedGroupId] = useState("");
+  const [associatedGroupId, setAssociatedGroupId] = useState<string>("");
+  const [error, setError] = useState<string | null>(null);
 
   const handleAssociatedGroupChange = (event: SelectChangeEvent) => {
     setAssociatedGroupId(event.target.value as string);
@@ -48,6 +48,12 @@ export default function AddContactForm() {
         body: JSON.stringify(body),
       });
 
+      if (!res.ok) {
+        const { error } = await res.json();
+        setError(error);
+        return;
+      }
+
       const contact = await res.json();
 
       router.push(`/contacts/${contact.id}`);
@@ -55,16 +61,6 @@ export default function AddContactForm() {
       console.error(error);
     }
   };
-
-  useEffect(() => {
-    try {
-      fetch("/api/groups")
-        .then((res) => res.json())
-        .then((data) => setGroupList(data));
-    } catch (error) {
-      console.error(error);
-    }
-  }, []);
 
   return (
     <Box
@@ -77,7 +73,7 @@ export default function AddContactForm() {
       <Typography component="h1" variant="h5">
         Add Contact
       </Typography>
-      <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
+      <Box component="form" onSubmit={handleSubmit} sx={{ mt: 3 }}>
         <Grid container spacing={2}>
           <Grid xs={4}>
             <TextField
@@ -111,7 +107,9 @@ export default function AddContactForm() {
           <Grid xs={6}>
             <TextField
               fullWidth
+              required
               id="email"
+              type="email"
               label="Email Address"
               name="email"
             />
@@ -149,12 +147,12 @@ export default function AddContactForm() {
               <Select
                 labelId="associated-group-select-label"
                 id="associated-group-select"
-                value={associatedGroupId}
+                value={associatedGroupId ?? ""}
                 label="Associated Group"
                 onChange={handleAssociatedGroupChange}
               >
                 <MenuItem value="">None</MenuItem>
-                {groupList.map((group: GroupType) => (
+                {groups.map((group: GroupType) => (
                   <MenuItem key={group.id} value={group.id}>
                     {group.name}
                   </MenuItem>
@@ -180,6 +178,11 @@ export default function AddContactForm() {
         >
           Cancel
         </Button>
+        {error && (
+          <Typography variant="body2" color="error" textAlign="center">
+            {error}
+          </Typography>
+        )}
       </Box>
     </Box>
   );

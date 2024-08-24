@@ -1,6 +1,7 @@
 import Button from "@mui/material/Button";
 import GroupAddIcon from "@mui/icons-material/GroupAdd";
 import GroupsTable from "@/components/groups/groups-table";
+import Typography from "@mui/material/Typography";
 
 export default function GroupsPage() {
   return (
@@ -14,6 +15,9 @@ export default function GroupsPage() {
       >
         Add Group
       </Button>
+      <Typography component="h1" variant="h5" sx={{ mb: 2 }}>
+        Groups
+      </Typography>
       <GroupsTable />
     </main>
   );
