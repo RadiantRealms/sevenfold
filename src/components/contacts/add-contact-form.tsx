@@ -13,18 +13,83 @@ import FormControl from "@mui/material/FormControl";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
 import { ContactType, GroupType } from "@/app/types";
 
+const states = [
+  "Alabama",
+  "Alaska",
+  "Arizona",
+  "Arkansas",
+  "California",
+  "Colorado",
+  "Connecticut",
+  "Delaware",
+  "Florida",
+  "Georgia",
+  "Hawaii",
+  "Idaho",
+  "Illinois",
+  "Indiana",
+  "Iowa",
+  "Kansas",
+  "Kentucky",
+  "Louisiana",
+  "Maine",
+  "Maryland",
+  "Massachusetts",
+  "Michigan",
+  "Minnesota",
+  "Mississippi",
+  "Missouri",
+  "Montana",
+  "Nebraska",
+  "Nevada",
+  "New Hampshire",
+  "New Jersey",
+  "New Mexico",
+  "New York",
+  "North Carolina",
+  "North Dakota",
+  "Ohio",
+  "Oklahoma",
+  "Oregon",
+  "Pennsylvania",
+  "Rhode Island",
+  "South Carolina",
+  "South Dakota",
+  "Tennessee",
+  "Texas",
+  "Utah",
+  "Vermont",
+  "Virginia",
+  "Washington",
+  "West Virginia",
+  "Wisconsin",
+  "Wyoming",
+];
+
 export default function AddContactForm({ groups }: { groups: GroupType[] }) {
   const router = useRouter();
   const [state, setState] = useState<{
-    associatedGroupId: string;
+    selectedState: string;
+    associatedGroupId: string | null;
     error: string | null;
   }>({
-    associatedGroupId: "",
+    selectedState: "",
+    associatedGroupId: null,
     error: null,
   });
 
+  const handleStateChange = (event: SelectChangeEvent) => {
+    setState({
+      ...state,
+      selectedState: event.target.value,
+    });
+  };
+
   const handleAssociatedGroupChange = (event: SelectChangeEvent) => {
-    setState({ associatedGroupId: event.target.value, error: null });
+    setState({
+      ...state,
+      associatedGroupId: event.target.value,
+    });
   };
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -38,7 +103,7 @@ export default function AddContactForm({ groups }: { groups: GroupType[] }) {
         address1: data.get("address1"),
         address2: data.get("address2"),
         city: data.get("city"),
-        state: data.get("state"),
+        state: state.selectedState,
         zip: data.get("zip"),
         phone: data.get("phone"),
         email: data.get("email"),
@@ -59,7 +124,10 @@ export default function AddContactForm({ groups }: { groups: GroupType[] }) {
 
       router.push(`/contacts/${contact.id}`);
     } catch (error) {
-      setState({ associatedGroupId: "", error: (error as Error).message });
+      setState({
+        ...state,
+        error: (error as Error).message,
+      });
     }
   };
 
@@ -135,7 +203,22 @@ export default function AddContactForm({ groups }: { groups: GroupType[] }) {
             <TextField fullWidth id="city" label="City" name="city" />
           </Grid>
           <Grid xs={4}>
-            <TextField fullWidth id="state" label="State" name="state" />
+            <FormControl fullWidth>
+              <InputLabel id="state-select-label">State</InputLabel>
+              <Select
+                labelId="state-select-label"
+                id="state-select"
+                value={state.selectedState}
+                label="State"
+                onChange={handleStateChange}
+              >
+                {states.map((stateName) => (
+                  <MenuItem key={stateName} value={stateName}>
+                    {stateName}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
           </Grid>
           <Grid xs={4}>
             <TextField fullWidth id="zip" label="Zip" name="zip" />
