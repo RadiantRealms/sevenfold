@@ -13,6 +13,7 @@ export default function Portal() {
       <Card
         variant="outlined"
         sx={{
+          my: 8,
           p: 4,
           width: "100%",
         }}
