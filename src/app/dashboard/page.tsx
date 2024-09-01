@@ -5,7 +5,7 @@ import { useUser } from "@auth0/nextjs-auth0/client";
 import Dashboard from "@/components/dashboard/dashboard";
 import LoadingComponent from "@/components/common/loading-component";
 import ErrorMessage from "@/components/common/error-message";
-import { DashboardDataType } from "../types";
+import { DashboardDataType } from "../../lib/types";
 
 export default function DashboardPage() {
   const { user } = useUser();
@@ -67,15 +67,13 @@ export default function DashboardPage() {
   return (
     <main>
       {user && (
-        <>
-          <Dashboard
-            user={user}
-            dashboardData={{
-              contactCount: state.contactCount,
-              groupCount: state.groupCount,
-            }}
-          />
-        </>
+        <Dashboard
+          user={user}
+          dashboardData={{
+            contactCount: state.contactCount,
+            groupCount: state.groupCount,
+          }}
+        />
       )}
     </main>
   );

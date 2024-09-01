@@ -7,7 +7,7 @@ import GroupsTable from "@/components/groups/groups-table";
 import Typography from "@mui/material/Typography";
 import LoadingComponent from "@/components/common/loading-component";
 import ErrorMessage from "@/components/common/error-message";
-import { GroupType } from "@/app/types";
+import { GroupType } from "@/lib/types";
 
 export default function GroupsPage() {
   const [state, setState] = useState<{

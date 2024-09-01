@@ -8,7 +8,7 @@ import EditIcon from "@mui/icons-material/Edit";
 import GroupMembersTable from "@/components/groups/group-members-table";
 import LoadingComponent from "@/components/common/loading-component";
 import ErrorMessage from "@/components/common/error-message";
-import { GroupType } from "@/app/types";
+import { GroupType } from "@/lib/types";
 import DeleteGroupButton from "@/components/groups/delete-group-button";
 
 interface IParams {

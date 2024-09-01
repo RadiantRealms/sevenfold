@@ -20,9 +20,9 @@ model Group {
 model Transaction {
   id             String          @id @default(cuid())
   organizationId String
+  amount         Decimal         @db.Money
   type           TransactionType
   date           DateTime?
-  amount         Float
   description    String?
   Contact        Contact?        @relation(fields: [contactId], references: [id])
   contactId      String?

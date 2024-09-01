@@ -5,7 +5,8 @@ import Button from "@mui/material/Button";
 import Divider from "@mui/material/Divider";
 import Paper from "@mui/material/Paper";
 import EditIcon from "@mui/icons-material/Edit";
-import { ContactType } from "@/app/types";
+import { ContactType } from "@/lib/types";
+import ContactTransactionsTable from "./contact-transaction-table";
 
 export default function ContactDetails({ contact }: { contact: ContactType }) {
   return (
@@ -142,6 +143,12 @@ export default function ContactDetails({ contact }: { contact: ContactType }) {
                 {contact.zip}
               </Typography>
               <Divider sx={{ my: 2 }} />
+            </Grid>
+            <Grid xs={12}>
+              <Typography variant="h6" sx={{ mb: 3 }}>
+                Transactions
+              </Typography>
+              <ContactTransactionsTable transactions={contact.transactions} />
             </Grid>
           </Grid>
         </Paper>

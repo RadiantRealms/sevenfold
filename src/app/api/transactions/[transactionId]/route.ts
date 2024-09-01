@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { getSession, withApiAuthRequired } from "@auth0/nextjs-auth0";
-import prisma from "../../../../lib/prisma";
+import prisma from "@/lib/prisma";
+import { transactionSchema } from "@/lib/schemas/transaction";
 
 export const GET = withApiAuthRequired(async function (req, { params }) {
   try {
@@ -10,6 +11,9 @@ export const GET = withApiAuthRequired(async function (req, { params }) {
       where: {
         organizationId,
         id: params?.transactionId as string,
+      },
+      include: {
+        Contact: true,
       },
     });
 
@@ -26,17 +30,18 @@ export const PUT = withApiAuthRequired(async function (req, { params }) {
   try {
     const session = await getSession();
     const organizationId = session?.user.org_id;
-    const { type, date, amount, description } = await req.json();
+    const transactionData = transactionSchema.parse(await req.json());
     const transaction = await prisma.transaction.update({
       where: {
         id: params?.transactionId as string,
+        organizationId,
       },
       data: {
-        organizationId,
-        type,
-        date,
-        amount: Math.round(amount * 100) / 100,
-        description,
+        ...transactionData,
+        amount:
+          transactionData.type == "EXPENSE"
+            ? -transactionData.amount
+            : transactionData.amount,
       },
     });
 

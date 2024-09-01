@@ -12,7 +12,7 @@ import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
 import { MuiTelInput } from "mui-tel-input";
-import { ContactType, GroupType } from "@/app/types";
+import { ContactType, GroupType } from "@/lib/types";
 
 const states = [
   "Alabama",

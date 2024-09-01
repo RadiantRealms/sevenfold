@@ -1,7 +1,7 @@
 import Box from "@mui/material/Box";
 import MuiLink from "@mui/material/Link";
-import { DataGrid, GridColDef } from "@mui/x-data-grid";
-import { GroupType } from "@/app/types";
+import { DataGrid, GridColDef, GridToolbar } from "@mui/x-data-grid";
+import { GroupType } from "@/lib/types";
 
 const columns: GridColDef[] = [
   { field: "id", headerName: "ID" },
@@ -29,6 +29,7 @@ export default function GroupsTable({ groups }: { groups: GroupType[] }) {
       <DataGrid
         rows={groups}
         columns={columns}
+        slots={{ toolbar: GridToolbar }}
         columnVisibilityModel={{
           id: false,
         }}

@@ -1,7 +1,7 @@
 import Box from "@mui/material/Box";
-import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import MuiLink from "@mui/material/Link";
-import { ContactType } from "@/app/types";
+import { DataGrid, GridColDef, GridToolbar } from "@mui/x-data-grid";
+import { ContactType } from "@/lib/types";
 
 const columns: GridColDef[] = [
   { field: "id", headerName: "ID" },
@@ -60,6 +60,7 @@ export default function ContactsTable({
       <DataGrid
         rows={contacts}
         columns={columns}
+        slots={{ toolbar: GridToolbar }}
         columnVisibilityModel={{
           id: false,
         }}

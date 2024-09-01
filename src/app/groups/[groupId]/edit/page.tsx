@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import EditGroupForm from "@/components/groups/edit-group-form";
 import LoadingComponent from "@/components/common/loading-component";
 import ErrorMessage from "@/components/common/error-message";
-import { GroupType } from "@/app/types";
+import { GroupType } from "@/lib/types";
 
 interface IParams {
   groupId: string;

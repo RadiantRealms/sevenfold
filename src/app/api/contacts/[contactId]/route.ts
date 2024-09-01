@@ -13,6 +13,7 @@ export const GET = withApiAuthRequired(async function (req, { params }) {
       },
       include: {
         Group: true,
+        transactions: true,
       },
     });
 
