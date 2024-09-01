@@ -5,10 +5,10 @@ Sevenfold is a web application built with Next.js, Auth0, and Material UI to hel
 ## Features:
 
 - Secure Login with Auth0
-- Manage Members (Create, Edit, View, Sort)
-- Track Transactions (Donations & Expenses)
+- Manage Members (Create, Edit, & Sort)
 - Group Management
-- Plaid Integration for Automated Transaction Retrieval (Planned)
+- Track Transactions (Donations & Expenses)
+- Data Exporting (CSV)
 
 ## Prerequisites:
 
@@ -67,7 +67,7 @@ Open http://localhost:3000 in your web browser.
 **Notes:**
 
 - New user registrations are placed in the "Sandbox" organization by default.
-- Group management and Plaid integration are planned features.
+- Plaid integration is a planned feature.
 
 **Sources:**
 
