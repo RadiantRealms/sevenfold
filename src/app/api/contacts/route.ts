@@ -17,6 +17,8 @@ export const GET = withApiAuthRequired(async function (req) {
       },
     });
 
+    if (!contacts) throw new Error("Could not fetch contacts");
+
     return NextResponse.json(contacts);
   } catch (error: any) {
     return NextResponse.json(

@@ -17,6 +17,9 @@ export const GET = withApiAuthRequired(async function (req, { params }) {
       },
     });
 
+    if (!transaction)
+      throw new Error("Could not fetch transaction with that ID");
+
     return NextResponse.json(transaction);
   } catch (error: any) {
     return NextResponse.json(
@@ -44,6 +47,8 @@ export const PUT = withApiAuthRequired(async function (req, { params }) {
             : transactionData.amount,
       },
     });
+
+    if (!transaction) throw new Error("Error updating transaction");
 
     return NextResponse.json(transaction);
   } catch (error: any) {

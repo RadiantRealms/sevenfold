@@ -15,6 +15,8 @@ export const GET = withApiAuthRequired(async function (req) {
       },
     });
 
+    if (!groups) throw new Error("Could not fetch groups");
+
     return NextResponse.json(groups);
   } catch (error: any) {
     return NextResponse.json(

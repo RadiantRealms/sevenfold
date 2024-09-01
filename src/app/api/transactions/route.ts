@@ -15,6 +15,8 @@ export const GET = withApiAuthRequired(async function (req) {
     },
   });
 
+  if (!transactions) throw new Error("Failed to fetch transactions");
+
   return NextResponse.json(transactions);
 });
 
@@ -32,6 +34,8 @@ export const POST = withApiAuthRequired(async function (req) {
           : transactionData.amount,
     },
   });
+
+  if (!transaction) throw new Error("Failed to record transaction");
 
   return NextResponse.json(transaction);
 });
