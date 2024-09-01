@@ -5,7 +5,7 @@ import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import ContactsOutlinedIcon from "@mui/icons-material/ContactsOutlined";
 import GroupsOutlinedIcon from "@mui/icons-material/GroupsOutlined";
-import { DashboardDataType } from "@/app/types";
+import { DashboardDataType } from "@/lib/types";
 
 export default function DashboardStatistics({
   dashboardData,
@@ -24,7 +24,8 @@ export default function DashboardStatistics({
           </CardMedia>
           <CardContent>
             <Typography variant="h6" component="a" href="/contacts">
-              {dashboardData.contactCount} Registered Contacts
+              {dashboardData.contactCount} Registered Contact
+              {dashboardData.contactCount > 1 ? "s" : false}
             </Typography>
           </CardContent>
         </Card>
@@ -39,7 +40,8 @@ export default function DashboardStatistics({
           </CardMedia>
           <CardContent>
             <Typography variant="h6" component="a" href="/groups">
-              {dashboardData.groupCount} Registered Groups
+              {dashboardData.groupCount} Registered Group
+              {dashboardData.groupCount > 1 ? "s" : false}
             </Typography>
           </CardContent>
         </Card>

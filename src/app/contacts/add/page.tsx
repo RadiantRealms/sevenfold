@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import AddContactForm from "@/components/contacts/add-contact-form";
 import LoadingComponent from "@/components/common/loading-component";
 import ErrorMessage from "@/components/common/error-message";
-import { GroupType } from "@/app/types";
+import { GroupType } from "@/lib/types";
 
 export default function AddContactPage() {
   const [state, setState] = useState<{

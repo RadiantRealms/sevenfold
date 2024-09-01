@@ -1,9 +1,9 @@
 "use client";
 
 import Box from "@mui/material/Box";
-import { DataGrid, GridColDef } from "@mui/x-data-grid";
+import { DataGrid, GridColDef, GridToolbar } from "@mui/x-data-grid";
 import MuiLink from "@mui/material/Link";
-import { GroupType } from "@/app/types";
+import { GroupType } from "@/lib/types";
 
 const columns: GridColDef[] = [
   { field: "id", headerName: "ID" },
@@ -40,10 +40,14 @@ export default function GroupMembersTable({ group }: { group: GroupType }) {
       <DataGrid
         rows={group.contacts}
         columns={columns}
+        slots={{ toolbar: GridToolbar }}
         columnVisibilityModel={{
           id: false,
         }}
         initialState={{
+          sorting: {
+            sortModel: [{ field: "name", sort: "asc" }],
+          },
           pagination: {
             paginationModel: {
               pageSize: 5,

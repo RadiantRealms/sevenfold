@@ -1,30 +1,65 @@
+"use client";
+
+import { useEffect, useState } from "react";
 import Button from "@mui/material/Button";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import DeleteTransactionButton from "@/components/transactions/delete-transaction-button";
 import TransactionDetails from "@/components/transactions/transaction-details";
-import prisma from "../../../lib/prisma";
+import ErrorMessage from "@/components/common/error-message";
+import LoadingComponent from "@/components/common/loading-component";
+import { TransactionType } from "@/lib/types";
 
 interface IParams {
   transactionId: string;
 }
 
-async function getTransactionDetails(id: string) {
-  const contact = await prisma.transaction.findUnique({
-    where: {
-      id,
-    },
+export default function TransactionPage({ params }: { params: IParams }) {
+  const [state, setState] = useState<{
+    transaction: TransactionType | null;
+    isLoading: boolean;
+    error: string | null;
+  }>({
+    transaction: null,
+    isLoading: true,
+    error: null,
   });
 
-  return contact;
-}
+  useEffect(() => {
+    async function fetchTransaction() {
+      try {
+        const res = await fetch(`/api/transactions/${params.transactionId}`);
 
-export default async function TransactionPage({ params }: { params: IParams }) {
-  const { transactionId } = params;
-  const transaction = await getTransactionDetails(transactionId);
+        if (!res.ok)
+          throw new Error("Failed to fetch transaction with that ID");
 
-  if (!transaction) {
-    return false;
-  }
+        const data: TransactionType = await res.json();
+
+        setState({ transaction: data, isLoading: false, error: null });
+      } catch (error) {
+        setState({
+          transaction: null,
+          isLoading: false,
+          error: (error as Error).message,
+        });
+      }
+    }
+
+    fetchTransaction();
+  }, [params.transactionId]);
+
+  if (state.isLoading)
+    return (
+      <main>
+        <LoadingComponent />
+      </main>
+    );
+
+  if (state.error)
+    return (
+      <main>
+        <ErrorMessage error={state.error} />
+      </main>
+    );
 
   return (
     <main>
@@ -37,8 +72,12 @@ export default async function TransactionPage({ params }: { params: IParams }) {
       >
         View All Transactions
       </Button>
-      <TransactionDetails transaction={transaction} />
-      <DeleteTransactionButton transactionId={transactionId} />
+      {state.transaction && (
+        <>
+          <TransactionDetails transaction={state.transaction} />
+          <DeleteTransactionButton transactionId={state.transaction.id} />
+        </>
+      )}
     </main>
   );
 }

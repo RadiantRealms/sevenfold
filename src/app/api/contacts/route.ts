@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { withApiAuthRequired, getSession } from "@auth0/nextjs-auth0";
 import { z } from "zod";
 import prisma from "@/lib/prisma";
-import { createContactSchema } from "@/lib/schemas/contact";
+import { contactSchema } from "@/lib/schemas/contact";
 
 export const GET = withApiAuthRequired(async function (req) {
   try {
@@ -17,6 +17,8 @@ export const GET = withApiAuthRequired(async function (req) {
       },
     });
 
+    if (!contacts) throw new Error("Could not fetch contacts");
+
     return NextResponse.json(contacts);
   } catch (error: any) {
     return NextResponse.json(
@@ -30,7 +32,7 @@ export const POST = withApiAuthRequired(async function (req: Request) {
   try {
     const session = await getSession();
     const organizationId = session?.user.org_id;
-    const contactData = createContactSchema.parse(await req.json());
+    const contactData = contactSchema.parse(await req.json());
 
     const contact = await prisma.contact.create({
       data: {

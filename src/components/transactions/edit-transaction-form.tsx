@@ -1,8 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import { forwardRef, useState } from "react";
 import { useRouter } from "next/navigation";
-import dayjs from "dayjs";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import Grid from "@mui/material/Unstable_Grid2";
@@ -13,35 +12,97 @@ import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
-import { TransactionType } from "@/app/types";
+import { NumericFormat, NumericFormatProps } from "react-number-format";
+import dayjs from "dayjs";
+import { ContactType, TransactionType } from "@/lib/types";
+
+interface CustomProps {
+  onChange: (event: { target: { name: string; value: string } }) => void;
+  name: string;
+}
+
+const NumericFormatCustom = forwardRef<NumericFormatProps, CustomProps>(
+  function NumericFormatCustom(props, ref) {
+    const { onChange, ...other } = props;
+
+    return (
+      <NumericFormat
+        {...other}
+        getInputRef={ref}
+        onValueChange={(values) => {
+          onChange({
+            target: {
+              name: props.name,
+              value: values.value,
+            },
+          });
+        }}
+        thousandSeparator
+        decimalScale={2}
+        fixedDecimalScale={true}
+        valueIsNumericString
+        prefix="$"
+      />
+    );
+  }
+);
 
 export default function EditTransactionForm({
   transaction,
+  contacts,
 }: {
   transaction: TransactionType;
+  contacts: ContactType[];
 }) {
   const router = useRouter();
+  const [state, setState] = useState<{
+    amount: string;
+    type: "DONATION" | "EXPENSE";
+    date: string;
+    description: string | null;
+    associatedContactId: string | null;
+    error: string | null;
+  }>({
+    amount: `${
+      transaction.type == "DONATION" ? transaction.amount : -transaction.amount
+    }`,
+    type: transaction.type,
+    date: `${transaction.date}`,
+    description: transaction.description,
+    associatedContactId: transaction.contactId,
+    error: null,
+  });
 
-  const [transactionType, setTransactionType] = useState(
-    transaction.type as string
-  );
+  const handleAmountChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setState({
+      ...state,
+      [event.target.name]: event.target.value,
+    });
+  };
 
-  const handleTransactionTypeChange = (event: SelectChangeEvent) => {
-    setTransactionType(event.target.value as string);
+  const handleSelectChange = (event: SelectChangeEvent) => {
+    setState({
+      ...state,
+      [event.target.name]: event.target.value,
+    });
   };
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     try {
       const data = new FormData(event.currentTarget);
+
+      if (!data.get("date")) throw new Error("Date is required");
+
       const body = {
         date: dayjs(data.get("date")?.toString(), "MM/DD/YYYY").toISOString(),
-        type: transactionType,
-        amount: data.get("amount"),
-        description: data.get("description"),
+        type: state.type,
+        amount: state.amount,
+        description: state.description,
+        contactId: state.associatedContactId,
       };
 
-      await fetch(`/api/transactions/${transaction.id}`, {
+      const res = await fetch(`/api/transactions/${transaction.id}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -49,9 +110,16 @@ export default function EditTransactionForm({
         body: JSON.stringify(body),
       });
 
-      router.push(`/transactions/${transaction.id}`);
+      if (!res.ok) throw new Error("Failed to update transaction");
+
+      const updatedTransaction: TransactionType = await res.json();
+
+      router.push(`/transactions/${updatedTransaction.id}`);
     } catch (error) {
-      console.error(error);
+      setState({
+        ...state,
+        error: (error as Error).message,
+      });
     }
   };
 
@@ -85,10 +153,11 @@ export default function EditTransactionForm({
                 <Select
                   labelId="transaction-type-select-label"
                   id="transaction-type-select"
-                  defaultValue={transaction.type}
-                  value={transactionType}
+                  name="type"
+                  defaultValue={state.type}
+                  value={state.type}
                   label="Transaction Type *"
-                  onChange={handleTransactionTypeChange}
+                  onChange={handleSelectChange}
                 >
                   <MenuItem value={"DONATION"}>Donation</MenuItem>
                   <MenuItem value={"EXPENSE"}>Expense</MenuItem>
@@ -99,10 +168,15 @@ export default function EditTransactionForm({
               <TextField
                 fullWidth
                 required
-                defaultValue={transaction.amount}
-                id="amount"
                 label="Amount"
+                defaultValue={state.amount}
+                value={state.amount}
+                onChange={handleAmountChange}
                 name="amount"
+                id="amount"
+                InputProps={{
+                  inputComponent: NumericFormatCustom as any,
+                }}
               />
             </Grid>
             <Grid xs={12}>
@@ -113,6 +187,29 @@ export default function EditTransactionForm({
                 label="Description"
                 name="description"
               />
+            </Grid>
+            <Grid xs={12}>
+              <FormControl fullWidth>
+                <InputLabel id="associated-contact-select-label">
+                  Associated Contact
+                </InputLabel>
+                <Select
+                  labelId="associated-contact-select-label"
+                  id="associated-contact-select"
+                  name="associatedContactId"
+                  value={state.associatedContactId ?? ""}
+                  label="Associated Contact"
+                  onChange={handleSelectChange}
+                >
+                  <MenuItem value="">None</MenuItem>
+                  {contacts.map((contact: ContactType) => (
+                    <MenuItem key={contact.id} value={contact.id}>
+                      {contact.firstName} {contact.middleName}{" "}
+                      {contact.lastName}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
             </Grid>
           </Grid>
           <Button

@@ -4,7 +4,7 @@ import Box from "@mui/material/Box";
 import MuiLink from "@mui/material/Link";
 import { DataGrid, GridColDef, GridToolbar } from "@mui/x-data-grid";
 import dayjs from "dayjs";
-import { TransactionType } from "@/lib/types";
+import { ContactProfileTransactionType } from "@/lib/types";
 
 const columns: GridColDef[] = [
   {
@@ -43,27 +43,12 @@ const columns: GridColDef[] = [
     headerName: "Description",
     flex: 1,
   },
-  {
-    field: "Contact",
-    headerName: "Contact",
-    flex: 1,
-    renderCell: (params) => {
-      if (!params.value) {
-        return params.value;
-      }
-      return (
-        <MuiLink
-          href={`/contacts/${params.value.id}`}
-        >{`${params.value.firstName} ${params.value.middleName} ${params.value.lastName}`}</MuiLink>
-      );
-    },
-  },
 ];
 
-export default function TransactionsTable({
+export default function ContactTransactionsTable({
   transactions,
 }: {
-  transactions: TransactionType[];
+  transactions: ContactProfileTransactionType[];
 }) {
   return (
     <Box sx={{ height: 400, width: "100%" }}>

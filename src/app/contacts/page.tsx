@@ -7,7 +7,7 @@ import Typography from "@mui/material/Typography";
 import ContactsTable from "@/components/contacts/contacts-table";
 import LoadingComponent from "@/components/common/loading-component";
 import ErrorMessage from "@/components/common/error-message";
-import { ContactType } from "@/app/types";
+import { ContactType } from "@/lib/types";
 
 export default function ContactsPage() {
   const [state, setState] = useState<{

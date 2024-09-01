@@ -4,8 +4,10 @@ import Grid from "@mui/material/Unstable_Grid2";
 import Button from "@mui/material/Button";
 import Divider from "@mui/material/Divider";
 import Paper from "@mui/material/Paper";
+import MuiLink from "@mui/material/Link";
 import EditIcon from "@mui/icons-material/Edit";
-import { TransactionType } from "@/app/types";
+import dayjs from "dayjs";
+import { TransactionType } from "@/lib/types";
 
 export default function TransactionDetails({
   transaction,
@@ -15,9 +17,11 @@ export default function TransactionDetails({
   return (
     <>
       <Typography variant="h4" gutterBottom>
-        {`$${transaction.amount} ${
-          transaction.type
-        } on ${transaction.date?.toLocaleDateString("en-US")}`}
+        {`${
+          transaction.type == "EXPENSE"
+            ? `$${-transaction.amount} Expense`
+            : `$${transaction.amount} Donation`
+        } on ${dayjs(transaction.date).format("MM/DD/YYYY")}`}
       </Typography>
       <Divider sx={{ my: 2 }} />
       <Button
@@ -47,7 +51,16 @@ export default function TransactionDetails({
                 Date
               </Typography>
               <Typography variant="body1" sx={{ minHeight: 24 }}>
-                {transaction.date?.toLocaleDateString()}
+                {dayjs(transaction.date).format("MM/DD/YYYY")}
+              </Typography>
+              <Divider sx={{ my: 2 }} />
+            </Grid>
+            <Grid xs={12}>
+              <Typography gutterBottom variant="subtitle2" fontWeight={500}>
+                Transaction ID
+              </Typography>
+              <Typography variant="body1" sx={{ minHeight: 24 }}>
+                {transaction.id}
               </Typography>
               <Divider sx={{ my: 2 }} />
             </Grid>
@@ -56,7 +69,7 @@ export default function TransactionDetails({
                 Transaction Type
               </Typography>
               <Typography variant="body1" sx={{ minHeight: 24 }}>
-                {transaction.type}
+                {transaction.type == "EXPENSE" ? "Expense" : "Donation"}
               </Typography>
               <Divider sx={{ my: 2 }} />
             </Grid>
@@ -65,10 +78,26 @@ export default function TransactionDetails({
                 Amount
               </Typography>
               <Typography variant="body1" sx={{ minHeight: 24 }}>
-                ${transaction.amount}
+                {`${transaction.amount}`}
               </Typography>
               <Divider sx={{ my: 2 }} />
             </Grid>
+            {transaction.Contact && (
+              <Grid xs={12}>
+                <Typography gutterBottom variant="subtitle2" fontWeight={500}>
+                  Associated Contact
+                </Typography>
+                <Typography
+                  component={MuiLink}
+                  href={`/contacts/${transaction.contactId}`}
+                  variant="body1"
+                  sx={{ minHeight: 24 }}
+                >
+                  {`${transaction.Contact.firstName} ${transaction.Contact.middleName} ${transaction.Contact.lastName}`}
+                </Typography>
+                <Divider sx={{ my: 2 }} />
+              </Grid>
+            )}
           </Grid>
         </Paper>
       </Box>

@@ -3,11 +3,11 @@
 import { useEffect, useState } from "react";
 import Button from "@mui/material/Button";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
-import DeleteContactButton from "@/components/contacts/delete-contact-button";
 import ContactDetails from "@/components/contacts/contact-details";
+import DeleteContactButton from "@/components/contacts/delete-contact-button";
 import LoadingComponent from "@/components/common/loading-component";
 import ErrorMessage from "@/components/common/error-message";
-import { ContactType } from "@/app/types";
+import { ContactType } from "@/lib/types";
 
 interface IParams {
   contactId: string;

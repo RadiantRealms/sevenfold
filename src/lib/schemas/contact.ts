@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-export const createContactSchema = z.object({
+export const contactSchema = z.object({
   firstName: z.string({
     required_error: "First name is required",
     invalid_type_error: "First name must be a string",

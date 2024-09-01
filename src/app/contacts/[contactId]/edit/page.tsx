@@ -6,7 +6,7 @@ import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import EditContactForm from "@/components/contacts/edit-contact-form";
 import LoadingComponent from "@/components/common/loading-component";
 import ErrorMessage from "@/components/common/error-message";
-import { ContactType, GroupType } from "@/app/types";
+import { ContactType, GroupType } from "@/lib/types";
 
 interface IParams {
   contactId: string;

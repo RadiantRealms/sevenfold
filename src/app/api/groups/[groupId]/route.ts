@@ -16,6 +16,8 @@ export const GET = withApiAuthRequired(async function (req, { params }) {
       },
     });
 
+    if (!group) throw new Error("Could not fetch group with that ID");
+
     return NextResponse.json(group);
   } catch (error: any) {
     return NextResponse.json(
@@ -42,7 +44,7 @@ export const PUT = withApiAuthRequired(async function (req, { params }) {
 
     if (!group) {
       return NextResponse.json(
-        { error: "Group could not be updated." },
+        { error: "Group could not be updated" },
         { status: 400 }
       );
     }
@@ -69,7 +71,7 @@ export const DELETE = withApiAuthRequired(async function (req, { params }) {
 
     if (!group) {
       return NextResponse.json(
-        { error: "Group could not be deleted." },
+        { error: "Group could not be deleted" },
         { status: 400 }
       );
     }
