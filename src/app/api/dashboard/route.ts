@@ -11,17 +11,11 @@ export const GET = withApiAuthRequired(async function (req) {
         organizationId,
       },
     });
-
-    if (!contactCount)
-      throw new Error("Error fetching registered contact count");
-
     const groupCount = await prisma.group.count({
       where: {
         organizationId,
       },
     });
-
-    if (!groupCount) throw new Error("Error fetching registered group count");
 
     return NextResponse.json({ contactCount, groupCount });
   } catch (error: any) {

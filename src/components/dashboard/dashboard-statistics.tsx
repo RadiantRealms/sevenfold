@@ -12,40 +12,39 @@ export default function DashboardStatistics({
 }: {
   dashboardData: DashboardDataType;
 }) {
+  const statistics = [
+    {
+      icon: <ContactsOutlinedIcon />,
+      count: dashboardData.contactCount,
+      label: "Registered Contact",
+      href: "/contacts",
+    },
+    {
+      icon: <GroupsOutlinedIcon />,
+      count: dashboardData.groupCount,
+      label: "Registered Group",
+      href: "/groups",
+    },
+  ];
+
   return (
     <Grid container spacing={2} data-testid="dashboard-statistics">
-      <Grid xs={6}>
-        <Card
-          sx={{ display: "flex", flex: 1, alignItems: "center", px: 2 }}
-          variant="outlined"
-        >
-          <CardMedia>
-            <ContactsOutlinedIcon />
-          </CardMedia>
-          <CardContent>
-            <Typography variant="h6" component="a" href="/contacts">
-              {dashboardData.contactCount} Registered Contact
-              {dashboardData.contactCount > 1 ? "s" : false}
-            </Typography>
-          </CardContent>
-        </Card>
-      </Grid>
-      <Grid xs={6}>
-        <Card
-          sx={{ display: "flex", flex: 1, alignItems: "center", px: 2 }}
-          variant="outlined"
-        >
-          <CardMedia>
-            <GroupsOutlinedIcon />
-          </CardMedia>
-          <CardContent>
-            <Typography variant="h6" component="a" href="/groups">
-              {dashboardData.groupCount} Registered Group
-              {dashboardData.groupCount > 1 ? "s" : false}
-            </Typography>
-          </CardContent>
-        </Card>
-      </Grid>
+      {statistics.map(({ icon, count, label, href }, index) => (
+        <Grid key={index} xs={6}>
+          <Card
+            sx={{ display: "flex", flex: 1, alignItems: "center", px: 2 }}
+            variant="outlined"
+          >
+            <CardMedia>{icon}</CardMedia>
+            <CardContent>
+              <Typography variant="h6" component="a" href={href}>
+                {count} {label}
+                {count !== 1 ? "s" : ""}
+              </Typography>
+            </CardContent>
+          </Card>
+        </Grid>
+      ))}
     </Grid>
   );
 }
