@@ -8,49 +8,80 @@ datasource db {
   directUrl = env("POSTGRES_URL_NON_POOLING")
 }
 
-model Group {
-  id             String    @id @default(cuid())
+model Person {
+  id             String           @id @default(cuid())
+  organizationId String
+  fullName       String
+  email          String?
+  phone          String?
+  streetAddress  String?
+  city           String?
+  state          String?
+  postalCode     String?
+  gender         String
+  ageRange       String
+  birthdate      String?
+  maritalStatus  String?
+  anniversary    String?
+  joinDate       String?
+  createdAt      DateTime         @default(now())
+  updatedAt      DateTime         @updatedAt
+  Household      Household?       @relation(fields: [householdId], references: [id])
+  householdId    String?
+  primaryFor     Household?       @relation("PrimaryContact")
+  lists          PeopleInLists[]
+  groups         PeopleInGroups[]
+
+  @@map(name: "people")
+}
+
+model Household {
+  id               String   @id @default(cuid())
+  organizationId   String
+  name             String
+  people           Person[]
+  primaryContact   Person?  @relation("PrimaryContact", fields: [primaryContactId], references: [id], onDelete: SetNull)
+  primaryContactId String?  @unique
+
+  @@map(name: "households")
+}
+
+model List {
+  id             String          @id @default(cuid())
   organizationId String
   name           String
-  contacts       Contact[]
+  people         PeopleInLists[]
+
+  @@map(name: "lists")
+}
+
+model Group {
+  id             String           @id @default(cuid())
+  organizationId String
+  name           String
+  people         PeopleInGroups[]
 
   @@map(name: "groups")
 }
 
-model Transaction {
-  id             String          @id @default(cuid())
-  organizationId String
-  amount         Decimal         @db.Money
-  type           TransactionType
-  date           DateTime?
-  description    String?
-  Contact        Contact?        @relation(fields: [contactId], references: [id])
-  contactId      String?
+model PeopleInLists {
+  Person     Person?  @relation(fields: [personId], references: [id])
+  personId   String
+  List       List?    @relation(fields: [listId], references: [id])
+  listId     String
+  assignedAt DateTime @default(now())
+  assignedBy String
 
-  @@map(name: "transactions")
+  @@id([personId, listId])
 }
 
-model Contact {
-  id             String        @id @default(cuid())
-  organizationId String
-  firstName      String
-  middleName     String?
-  lastName       String
-  address1       String?
-  address2       String?
-  city           String?
-  state          String?
-  zip            String?
-  phone          String?
-  email          String?
-  transactions   Transaction[]
-  Group          Group?        @relation(fields: [groupId], references: [id], onDelete: SetNull)
-  groupId        String?
+model PeopleInGroups {
+  Person     Person?  @relation(fields: [personId], references: [id])
+  personId   String
+  Group      Group?   @relation(fields: [groupId], references: [id])
+  groupId    String
+  assignedAt DateTime @default(now())
+  assignedBy String
 
-  @@map(name: "contacts")
-}
-
-enum TransactionType {
-  DONATION
-  EXPENSE
+  @@id([personId, groupId])
 }

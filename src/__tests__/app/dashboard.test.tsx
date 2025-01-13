@@ -1,6 +1,6 @@
 import { render, screen } from "@testing-library/react";
 import { mockUser, withUserProvider } from "../fixtures";
-import DashboardPage from "@/app/dashboard/page";
+import DashboardPage from "@/app/page";
 import PortalPage from "@/app/page";
 
 describe("Dashboard", () => {

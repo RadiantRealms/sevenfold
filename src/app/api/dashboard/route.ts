@@ -1,12 +1,13 @@
 import { NextResponse } from "next/server";
-import { getSession, withApiAuthRequired } from "@auth0/nextjs-auth0";
-import prisma from "@/lib/prisma";
 
-export const GET = withApiAuthRequired(async function (req) {
+import prisma from "@/lib/prisma";
+import { auth0 } from "@/lib/auth0";
+
+export async function GET() {
   try {
-    const session = await getSession();
+    const session = await auth0.getSession();
     const organizationId = session?.user.org_id;
-    const contactCount = await prisma.contact.count({
+    const personCount = await prisma.person.count({
       where: {
         organizationId,
       },
@@ -16,12 +17,21 @@ export const GET = withApiAuthRequired(async function (req) {
         organizationId,
       },
     });
+    const newestMembers = await prisma.person.findMany({
+      where: {
+        organizationId,
+      },
+      take: 5,
+      orderBy: {
+        createdAt: "desc",
+      },
+    });
 
-    return NextResponse.json({ contactCount, groupCount });
+    return NextResponse.json({ personCount, groupCount, newestMembers });
   } catch (error: any) {
     return NextResponse.json(
       { error: error.message },
       { status: error.status || 500 }
     );
   }
-});
+}
