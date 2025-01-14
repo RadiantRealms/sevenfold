@@ -109,7 +109,10 @@ export default function AddHouseholdPage() {
             <form onSubmit={handleSubmit}>
               <Fieldset>
                 <Legend>Add Household</Legend>
-                <Text>Please fill out as completely as possible.</Text>
+                <Text>
+                  Please enter a name for the household and select a primary
+                  contact.
+                </Text>
                 <FieldGroup>
                   <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 sm:gap-4">
                     <Field>

@@ -2,14 +2,15 @@
 
 import { useEffect, useState } from "react";
 import { notFound } from "next/navigation";
+import { ArrowLeftIcon } from "@heroicons/react/16/solid";
 
 import { Button } from "@/components/catalyst/button";
 import { Subheading } from "@/components/catalyst/heading";
 import { LoadingProgress } from "@/components/common/loading-progress";
 import { PeopleTable } from "@/components/people/people-table";
+import { Text, TextLink } from "@/components/catalyst/text";
 
 import { Household } from "@/lib/types";
-import { Text, TextLink } from "@/components/catalyst/text";
 
 export default function HouseholdPage({
   params,
@@ -92,6 +93,12 @@ export default function HouseholdPage({
         </div>
       </div>
       <PeopleTable people={state.household.people} />
+      <div className="flex w-full flex-wrap items-end justify-between py-6">
+        <Button outline href="/people/households">
+          <ArrowLeftIcon />
+          Back to Households
+        </Button>
+      </div>
     </main>
   );
 }
