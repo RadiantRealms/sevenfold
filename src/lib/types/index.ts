@@ -13,6 +13,11 @@ export type Household = Prisma.HouseholdGetPayload<{
   };
 }>;
 
+export type PeopleOverview = {
+  adultCount: number;
+  childCount: number;
+};
+
 export type DashboardDataType = {
   personCount: number;
   groupCount: number;

@@ -3,28 +3,11 @@
 import { useEffect, useState } from "react";
 
 import { Heading, Subheading } from "@/components/catalyst/heading";
+import { Button } from "@/components/catalyst/button";
 import { LoadingProgress } from "@/components/common/loading-progress";
+import { PeopleTable } from "@/components/people/people-table";
 
 import { DashboardDataType, Person } from "@/lib/types";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/catalyst/table";
-import {
-  Dropdown,
-  DropdownButton,
-  DropdownItem,
-  DropdownMenu,
-} from "@/components/catalyst/dropdown";
-import dayjs from "dayjs";
-import { EllipsisHorizontalIcon } from "@heroicons/react/16/solid";
-import { Button } from "@/components/catalyst/button";
-import { Text } from "@/components/catalyst/text";
-import { PeopleTable } from "@/components/people/people-table";
 
 export default function DashboardPage() {
   const [state, setState] = useState<{
