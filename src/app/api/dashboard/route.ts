@@ -7,25 +7,32 @@ export async function GET() {
   try {
     const session = await auth0.getSession();
     const organizationId = session?.user.org_id;
-    const personCount = await prisma.person.count({
-      where: {
-        organizationId,
-      },
-    });
-    const groupCount = await prisma.group.count({
-      where: {
-        organizationId,
-      },
-    });
-    const newestMembers = await prisma.person.findMany({
-      where: {
-        organizationId,
-      },
-      take: 5,
-      orderBy: {
-        createdAt: "desc",
-      },
-    });
+
+    if (!organizationId) {
+      throw new Error("Organization ID not found.");
+    }
+
+    const [personCount, groupCount, newestMembers] = await Promise.all([
+      prisma.person.count({
+        where: {
+          organizationId,
+        },
+      }),
+      prisma.group.count({
+        where: {
+          organizationId,
+        },
+      }),
+      prisma.person.findMany({
+        where: {
+          organizationId,
+        },
+        take: 5,
+        orderBy: {
+          createdAt: "desc",
+        },
+      }),
+    ]);
 
     return NextResponse.json({ personCount, groupCount, newestMembers });
   } catch (error: any) {

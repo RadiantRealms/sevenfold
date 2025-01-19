@@ -71,7 +71,7 @@ export default function DashboardPage() {
           <Heading>Dashboard</Heading>
         </div>
       </div>
-      <div>
+      <div className="border-b border-zinc-950/10 pb-6 dark:border-white/10">
         <dl className="mt-5 grid grid-cols-1 gap-5 sm:grid-cols-3">
           <div className="overflow-hidden rounded-lg px-4 py-5 border border-zinc-950/10 pb-6 dark:border-white/10 sm:p-6">
             <dt className="truncate text-sm font-medium">Number of Members</dt>
@@ -80,16 +80,16 @@ export default function DashboardPage() {
             </dd>
           </div>
           <div className="overflow-hidden rounded-lg px-4 py-5 border border-zinc-950/10 pb-6 dark:border-white/10 sm:p-6">
-            <dt className="truncate text-sm font-medium">Number of Groups</dt>
-            <dd className="mt-1 text-3xl font-semibold tracking-tight">
-              {state.groupCount}
-            </dd>
-          </div>
-          <div className="overflow-hidden rounded-lg px-4 py-5 border border-zinc-950/10 pb-6 dark:border-white/10 sm:p-6">
             <dt className="truncate text-sm font-medium">
               Donations (Last 30 Days)
             </dt>
             <dd className="mt-1 text-3xl font-semibold tracking-tight">N/A</dd>
+          </div>
+          <div className="overflow-hidden rounded-lg px-4 py-5 border border-zinc-950/10 pb-6 dark:border-white/10 sm:p-6">
+            <dt className="truncate text-sm font-medium">Number of Groups</dt>
+            <dd className="mt-1 text-3xl font-semibold tracking-tight">
+              {state.groupCount}
+            </dd>
           </div>
         </dl>
       </div>

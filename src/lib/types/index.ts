@@ -13,9 +13,18 @@ export type Household = Prisma.HouseholdGetPayload<{
   };
 }>;
 
+export type JoinYearEntry = {
+  year: number;
+  count: number;
+};
+
 export type PeopleOverview = {
   adultCount: number;
   childCount: number;
+  maleCount: number;
+  femaleCount: number;
+  nonbinaryCount: number;
+  joinYearSummary: JoinYearEntry[];
 };
 
 export type DashboardDataType = {
