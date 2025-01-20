@@ -30,13 +30,13 @@ export default function PeopleLayout({
             href="/giving/donations"
             current={pathname.startsWith("/giving/donations")}
           >
-            Donation List
+            Donations
           </NavbarItem>
           <NavbarItem
-            href="/giving/donor-reports"
-            current={pathname.startsWith("/giving/donor-reports")}
+            href="/giving/reports"
+            current={pathname.startsWith("/giving/reports")}
           >
-            Donor Reports
+            Reports
           </NavbarItem>
         </NavbarSection>
       </Navbar>

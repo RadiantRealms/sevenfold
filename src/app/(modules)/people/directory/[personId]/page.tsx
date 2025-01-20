@@ -69,7 +69,10 @@ export default function PersonPage({
     <main>
       <div className="flex w-full flex-wrap items-end justify-between border-b border-zinc-950/10 pb-6 dark:border-white/10">
         <Subheading>{state.person?.fullName}</Subheading>
-        <div className="flex">
+        <div className="flex gap-4">
+          <Button outline href={`/giving/reports/donors/${state.person?.id}`}>
+            View Donations
+          </Button>
           <Button href={`/people/directory/${state.person?.id}/edit`}>
             Edit Profile
           </Button>

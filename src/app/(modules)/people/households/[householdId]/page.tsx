@@ -8,7 +8,7 @@ import { Button } from "@/components/catalyst/button";
 import { Subheading } from "@/components/catalyst/heading";
 import { Text, TextLink } from "@/components/catalyst/text";
 import { LoadingProgress } from "@/components/common/loading-progress";
-import { PeopleTable } from "@/components/people/people-table";
+import { HouseholdPeopleTable } from "@/components/people/household-people-table";
 
 import { Household } from "@/lib/types";
 
@@ -27,6 +27,42 @@ export default function HouseholdPage({
     error: null,
   });
 
+  async function removePersonFromHousehold(personId: string) {
+    try {
+      const res = await fetch(`/api/people/${personId}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ removeFromHousehold: true }),
+      });
+
+      if (!res.ok) {
+        const error = await res.json();
+        throw new Error(
+          error.error || "Failed to remove person from household"
+        );
+      }
+
+      setState((prevState) => {
+        if (!prevState.household) return prevState;
+
+        return {
+          ...prevState,
+          household: {
+            ...prevState.household,
+            people: prevState.household.people.filter(
+              (person) => person.id !== personId
+            ),
+          },
+        };
+      });
+    } catch (error: any) {
+      console.error("Error:", error.message);
+      throw error;
+    }
+  }
+
   useEffect(() => {
     async function fetchHousehold() {
       try {
@@ -38,7 +74,8 @@ export default function HouseholdPage({
         const household: Household = await res.json();
 
         setState({ household, isLoading: false, error: null });
-      } catch (error) {
+      } catch (error: any) {
+        console.error("Error:", error.message);
         setState({
           household: null,
           isLoading: false,
@@ -80,7 +117,7 @@ export default function HouseholdPage({
             </TextLink>
           </Text>
         </div>
-        <div className="flex gap-4">
+        <div className="flex gap-4 mt-4 sm:mt-0">
           <Button
             outline
             href={`/people/households/${state.household.id}/edit`}
@@ -92,7 +129,10 @@ export default function HouseholdPage({
           </Button>
         </div>
       </div>
-      <PeopleTable people={state.household.people} />
+      <HouseholdPeopleTable
+        household={state.household}
+        removePerson={removePersonFromHousehold}
+      />
       <div className="flex w-full flex-wrap items-end justify-between py-6">
         <Button outline href="/people/households">
           <ArrowLeftIcon />

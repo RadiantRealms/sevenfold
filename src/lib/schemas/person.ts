@@ -39,4 +39,6 @@ export const personSchema = z.object({
   joinDate: z
     .string({ invalid_type_error: "Join date must be a string" })
     .nullish(),
+  addToHousehold: z.boolean().optional(),
+  removeFromHousehold: z.boolean().optional(),
 });

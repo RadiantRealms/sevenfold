@@ -14,19 +14,24 @@ import {
 } from "@/components/catalyst/fieldset";
 import { Input, InputGroup } from "@/components/catalyst/input";
 import { Select } from "@/components/catalyst/select";
-import { Text, TextLink } from "@/components/catalyst/text";
-import { Subheading } from "@/components/catalyst/heading";
+import { Text } from "@/components/catalyst/text";
 import { LoadingProgress } from "@/components/common/loading-progress";
 
 import { Donation, Person } from "@/lib/types";
 
-export default function AddDonationPAge() {
+export default function EditDonationPage({
+  params,
+}: {
+  params: Promise<{ donationId: string }>;
+}) {
   const router = useRouter();
   const [state, setState] = useState<{
+    donation: Donation | null;
     people: Person[];
     isLoading: boolean;
     error: string | null;
   }>({
+    donation: null,
     people: [],
     isLoading: true,
     error: null,
@@ -44,13 +49,13 @@ export default function AddDonationPAge() {
         personId: data.get("donor"),
       };
 
-      const res = await fetch("/api/giving/donations", {
-        method: "POST",
+      const res = await fetch(`/api/giving/donations/${state.donation?.id}`, {
+        method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(body),
       });
 
-      if (!res.ok) throw new Error("Failed to record donation");
+      if (!res.ok) throw new Error("Failed to update donation");
 
       const donation: Donation = await res.json();
 
@@ -61,17 +66,25 @@ export default function AddDonationPAge() {
   };
 
   useEffect(() => {
-    async function fetchPeople() {
+    async function fetchData() {
       try {
-        const res = await fetch("/api/people");
+        const donationId = (await params).donationId;
+        const donationRes = await fetch(`/api/giving/donations/${donationId}`);
 
-        if (!res.ok) throw new Error("Failed to fetch people");
+        if (!donationRes.ok) throw new Error("Failed to fetch donation");
 
-        const people: Person[] = await res.json();
+        const donation: Donation = await donationRes.json();
 
-        setState({ people, isLoading: false, error: null });
+        const peopleRes = await fetch("/api/people");
+
+        if (!peopleRes.ok) throw new Error("Failed to fetch people");
+
+        const people: Person[] = await peopleRes.json();
+
+        setState({ donation, people, isLoading: false, error: null });
       } catch (error: any) {
         setState({
+          donation: null,
           people: [],
           isLoading: false,
           error: (error as Error).message,
@@ -79,7 +92,7 @@ export default function AddDonationPAge() {
       }
     }
 
-    fetchPeople();
+    fetchData();
   }, []);
 
   if (state.isLoading)
@@ -97,27 +110,22 @@ export default function AddDonationPAge() {
   return (
     <main>
       <div className="pb-6">
-        {state.people.length == 0 && (
-          <>
-            <Subheading className="mb-1">Add Donation</Subheading>
-            <Text>
-              Please{" "}
-              <TextLink href="/people/directory/add">add people</TextLink> to
-              your directory before recording a donation.
-            </Text>
-          </>
-        )}
         {state.people.length > 0 && (
           <>
             <form onSubmit={handleSubmit}>
               <Fieldset>
-                <Legend>Add Donation</Legend>
-                <Text>Please fill out to the best of your ability.</Text>
+                <Legend>Edit Donation</Legend>
+                <Text>Please complete the form below.</Text>
                 <FieldGroup>
                   <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 sm:gap-4">
                     <Field>
                       <Label>Date</Label>
-                      <Input required type="date" name="date" />
+                      <Input
+                        required
+                        type="date"
+                        name="date"
+                        defaultValue={state.donation?.date}
+                      />
                     </Field>
 
                     <Field>
@@ -130,6 +138,7 @@ export default function AddDonationPAge() {
                           min="0"
                           step="0.01"
                           name="amount"
+                          defaultValue={state.donation?.amount.toString()}
                         />
                       </InputGroup>
                     </Field>
@@ -137,7 +146,11 @@ export default function AddDonationPAge() {
                   <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 sm:gap-4">
                     <Field>
                       <Label>Fund</Label>
-                      <Select required name="fund">
+                      <Select
+                        required
+                        name="fund"
+                        defaultValue={(state.donation?.fund as string) ?? ""}
+                      >
                         <option value="">Select a fund</option>
                         <option value="MISSION">Mission</option>
                         <option value="TITHES">Tithes</option>
@@ -146,7 +159,11 @@ export default function AddDonationPAge() {
 
                     <Field>
                       <Label>Donor</Label>
-                      <Select required name="donor">
+                      <Select
+                        required
+                        name="donor"
+                        defaultValue={state.donation?.personId || ""}
+                      >
                         <option value="">Select a donor</option>
                         {state.people
                           .sort(

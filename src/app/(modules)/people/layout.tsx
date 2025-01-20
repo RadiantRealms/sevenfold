@@ -27,18 +27,6 @@ export default function PeopleLayout({
             Overview
           </NavbarItem>
           <NavbarItem
-            href="/people/lists"
-            current={pathname.startsWith("/people/lists")}
-          >
-            Lists
-          </NavbarItem>
-          <NavbarItem
-            href="/people/forms"
-            current={pathname.startsWith("/people/forms")}
-          >
-            Forms
-          </NavbarItem>
-          <NavbarItem
             href="/people/households"
             current={pathname.startsWith("/people/households")}
           >

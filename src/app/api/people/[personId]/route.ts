@@ -46,13 +46,44 @@ export async function PUT(
 
     if (!session) throw new Error("User is unauthorized");
 
-    const organizationId = session?.user.org_id!;
-    const personData = personSchema.parse(await request.json());
+    const organizationId = session.user.org_id!;
+
+    const requestData = await request.json();
+
+    if (requestData.addToHousehold) {
+      const person = await prisma.person.update({
+        where: {
+          id: personId,
+          organizationId,
+        },
+        data: {
+          householdId: requestData.householdId,
+        },
+      });
+
+      return NextResponse.json(person);
+    }
+
+    if (requestData.removeFromHousehold) {
+      const person = await prisma.person.update({
+        where: {
+          id: personId,
+          organizationId,
+        },
+        data: {
+          householdId: null,
+        },
+      });
+
+      return NextResponse.json(person);
+    }
+
+    const personData = personSchema.parse(requestData);
 
     const person = await prisma.person.update({
       where: {
-        organizationId,
         id: personId,
+        organizationId,
       },
       data: personData,
     });

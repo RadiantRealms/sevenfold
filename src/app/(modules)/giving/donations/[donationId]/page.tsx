@@ -15,6 +15,7 @@ import { TextLink } from "@/components/catalyst/text";
 import { Donation } from "@/lib/types";
 import { NumericFormat } from "react-number-format";
 import { LoadingProgress } from "@/components/common/loading-progress";
+import { Subheading } from "@/components/catalyst/heading";
 
 export default function DonationPage({
   params,
@@ -42,7 +43,6 @@ export default function DonationPage({
         const donation: Donation = await res.json();
 
         setState({ donation, isLoading: false, error: null });
-        console.log(donation);
       } catch (error) {
         setState({
           donation: null,
@@ -66,6 +66,33 @@ export default function DonationPage({
 
   return (
     <main>
+      <div className="flex w-full flex-wrap items-end justify-between border-b border-zinc-950/10 pb-6 dark:border-white/10">
+        <Subheading>
+          {state.donation?.Person?.fullName} gave{" "}
+          {state.donation?.amount ? (
+            <NumericFormat
+              value={`${state.donation.amount}`}
+              thousandsGroupStyle="thousand"
+              thousandSeparator=","
+              displayType="text"
+              decimalScale={2}
+              fixedDecimalScale
+              renderText={(value) => `$${value}`}
+            />
+          ) : (
+            "N/A"
+          )}{" "}
+          on{" "}
+          {state.donation?.date
+            ? dayjs(state.donation.date, "YYYY-MM-DD").format("MMMM DD, YYYY")
+            : "N/A"}
+        </Subheading>
+        <div className="flex">
+          <Button href={`/giving/donations/${state.donation?.id}/edit`}>
+            Edit Donation
+          </Button>
+        </div>
+      </div>
       <DescriptionList>
         <DescriptionTerm>Date</DescriptionTerm>
         <DescriptionDetails>
@@ -105,11 +132,17 @@ export default function DonationPage({
           </TextLink>
         </DescriptionDetails>
 
-        <DescriptionTerm>Fee</DescriptionTerm>
-        <DescriptionDetails>$4.79 USD</DescriptionDetails>
+        <DescriptionTerm>Created At</DescriptionTerm>
+        <DescriptionDetails>
+          {state.donation?.createdAt
+            ? dayjs(state.donation.createdAt, "YYYY-MM-DD").format(
+                "MMMM DD, YYYY"
+              )
+            : "N/A"}
+        </DescriptionDetails>
 
-        <DescriptionTerm>Net</DescriptionTerm>
-        <DescriptionDetails>$1,955.00</DescriptionDetails>
+        <DescriptionTerm>Logged By</DescriptionTerm>
+        <DescriptionDetails>{state.donation?.loggedBy}</DescriptionDetails>
       </DescriptionList>
       <div className="flex w-full flex-wrap items-end justify-between py-6">
         <Button outline href="/giving/donations">

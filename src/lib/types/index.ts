@@ -34,6 +34,16 @@ export type GivingOverview = {
   latestDonations: Donation[];
 };
 
+export type Donor = {
+  personId: string;
+  fullName: string;
+  phone: string;
+  email: string;
+  totalDonations: number;
+  totalAmount: number;
+  household: Household;
+};
+
 export type PeopleOverview = {
   adultCount: number;
   childCount: number;

@@ -25,8 +25,8 @@ export default function SupportPage() {
         <Heading>Support</Heading>
       </div>
       <Text className="py-4">
-        Please check back later. We're working on a knowledge base! In the
-        meantime, use the "Request Support" button to get in touch.
+        We're working on a knowledge base! In the meantime, use the "Request
+        Support" button to get in touch.
       </Text>
       <Button
         href={`mailto:support@radiantrealms.one?subject=Support Request (${user?.org_id})`}
