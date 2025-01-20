@@ -6,9 +6,9 @@ import { ArrowLeftIcon } from "@heroicons/react/16/solid";
 
 import { Button } from "@/components/catalyst/button";
 import { Subheading } from "@/components/catalyst/heading";
+import { Text, TextLink } from "@/components/catalyst/text";
 import { LoadingProgress } from "@/components/common/loading-progress";
 import { PeopleTable } from "@/components/people/people-table";
-import { Text, TextLink } from "@/components/catalyst/text";
 
 import { Household } from "@/lib/types";
 

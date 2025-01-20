@@ -13,9 +13,25 @@ export type Household = Prisma.HouseholdGetPayload<{
   };
 }>;
 
+export type Donation = Prisma.DonationGetPayload<{ include: { Person: true } }>;
+
+export type DashboardDataType = {
+  personCount: number;
+  last30DaysDonationAmount: number;
+  groupCount: number;
+  newestMembers: Person[];
+};
+
 export type JoinYearEntry = {
   year: number;
   count: number;
+};
+
+export type GivingOverview = {
+  last30DaysDonationAmount: number;
+  totalDonationsAmount: number;
+  donorCount: number;
+  latestDonations: Donation[];
 };
 
 export type PeopleOverview = {
@@ -25,10 +41,4 @@ export type PeopleOverview = {
   femaleCount: number;
   nonbinaryCount: number;
   joinYearSummary: JoinYearEntry[];
-};
-
-export type DashboardDataType = {
-  personCount: number;
-  groupCount: number;
-  newestMembers: Person[];
 };

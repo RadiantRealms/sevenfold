@@ -3,26 +3,26 @@
 import { useEffect, useState } from "react";
 import { NumericFormat } from "react-number-format";
 
-import { Heading, Subheading } from "@/components/catalyst/heading";
-import { Button } from "@/components/catalyst/button";
+import { Subheading } from "@/components/catalyst/heading";
 import { LoadingProgress } from "@/components/common/loading-progress";
-import { PeopleTable } from "@/components/people/people-table";
+import { Button } from "@/components/catalyst/button";
+import { DonationsTable } from "@/components/giving/donations-table";
 
-import { DashboardDataType, Person } from "@/lib/types";
+import { Donation, GivingOverview } from "@/lib/types";
 
-export default function DashboardPage() {
+export default function GivingPage() {
   const [state, setState] = useState<{
-    personCount: number;
     last30DaysDonationAmount: number;
-    groupCount: number;
-    newestMembers: Person[];
+    totalDonationsAmount: number;
+    donorCount: number;
+    latestDonations: Donation[];
     isLoading: boolean;
     error: string | null;
   }>({
-    personCount: 0,
     last30DaysDonationAmount: 0,
-    groupCount: 0,
-    newestMembers: [],
+    totalDonationsAmount: 0,
+    donorCount: 0,
+    latestDonations: [],
     isLoading: true,
     error: null,
   });
@@ -30,31 +30,31 @@ export default function DashboardPage() {
   useEffect(() => {
     async function fetchData() {
       try {
-        const dashboardData = await fetch("/api/dashboard/");
-        if (!dashboardData.ok)
-          throw new Error("Failed to fetch dashboard data");
+        const data = await fetch("/api/giving/overview");
+
+        if (!data.ok) throw new Error("Failed to fetch overview data");
 
         const {
-          personCount,
           last30DaysDonationAmount,
-          groupCount,
-          newestMembers,
-        }: DashboardDataType = await dashboardData.json();
+          totalDonationsAmount,
+          donorCount,
+          latestDonations,
+        }: GivingOverview = await data.json();
 
         setState({
-          personCount,
           last30DaysDonationAmount,
-          groupCount,
-          newestMembers,
+          totalDonationsAmount,
+          donorCount,
+          latestDonations,
           isLoading: false,
           error: null,
         });
       } catch (error) {
         setState({
-          personCount: 0,
           last30DaysDonationAmount: 0,
-          groupCount: 0,
-          newestMembers: [],
+          totalDonationsAmount: 0,
+          donorCount: 0,
+          latestDonations: [],
           isLoading: false,
           error: (error as Error).message,
         });
@@ -77,17 +77,11 @@ export default function DashboardPage() {
     <main>
       <div className="flex w-full flex-wrap items-end justify-between gap-4 border-b border-zinc-950/10 pb-6 dark:border-white/10">
         <div>
-          <Heading>Dashboard</Heading>
+          <Subheading>Donation Statistics</Subheading>
         </div>
       </div>
       <div className="border-b border-zinc-950/10 pb-6 dark:border-white/10">
         <dl className="mt-5 grid grid-cols-1 gap-5 sm:grid-cols-3">
-          <div className="overflow-hidden rounded-lg px-4 py-5 border border-zinc-950/10 pb-6 dark:border-white/10 sm:p-6">
-            <dt className="truncate text-sm font-medium">Number of Members</dt>
-            <dd className="mt-1 text-3xl font-semibold tracking-tight">
-              {state.personCount}
-            </dd>
-          </div>
           <div className="overflow-hidden rounded-lg px-4 py-5 border border-zinc-950/10 pb-6 dark:border-white/10 sm:p-6">
             <dt className="truncate text-sm font-medium">
               Donations (Last 30 Days)
@@ -103,21 +97,35 @@ export default function DashboardPage() {
             </dd>
           </div>
           <div className="overflow-hidden rounded-lg px-4 py-5 border border-zinc-950/10 pb-6 dark:border-white/10 sm:p-6">
-            <dt className="truncate text-sm font-medium">Number of Groups</dt>
+            <dt className="truncate text-sm font-medium">
+              Donation Total (All Time)
+            </dt>
             <dd className="mt-1 text-3xl font-semibold tracking-tight">
-              {state.groupCount}
+              <NumericFormat
+                value={state.totalDonationsAmount}
+                thousandsGroupStyle="thousand"
+                thousandSeparator=","
+                displayType="text"
+                renderText={(value) => `$${value}`}
+              />
+            </dd>
+          </div>
+          <div className="overflow-hidden rounded-lg px-4 py-5 border border-zinc-950/10 pb-6 dark:border-white/10 sm:p-6">
+            <dt className="truncate text-sm font-medium">Number of Donors</dt>
+            <dd className="mt-1 text-3xl font-semibold tracking-tight">
+              {state.donorCount}
             </dd>
           </div>
         </dl>
       </div>
 
       <div className="flex w-full flex-wrap items-end justify-between border-b border-zinc-950/10 py-6 dark:border-white/10">
-        <Subheading>Newest Members</Subheading>
+        <Subheading>Latest Donations</Subheading>
         <div className="flex">
-          <Button href="/people/directory/add">Add Person</Button>
+          <Button href="/giving/donations/add">Add Donation</Button>
         </div>
       </div>
-      <PeopleTable people={state.newestMembers} />
+      <DonationsTable donations={state.latestDonations} />
     </main>
   );
 }

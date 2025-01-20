@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
 import dayjs from "dayjs";
 import { ArrowLeftIcon } from "@heroicons/react/16/solid";
 
@@ -21,7 +20,6 @@ export default function PersonPage({
 }: {
   params: Promise<{ personId: string }>;
 }) {
-  const router = useRouter();
   const [state, setState] = useState<{
     person: Person | null;
     isLoading: boolean;

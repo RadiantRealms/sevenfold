@@ -31,6 +31,7 @@ model Person {
   primaryFor     Household?       @relation("PrimaryContact")
   lists          PeopleInLists[]
   groups         PeopleInGroups[]
+  donations      Donation[]
 
   @@map(name: "people")
 }
@@ -84,4 +85,18 @@ model PeopleInGroups {
   assignedBy String
 
   @@id([personId, groupId])
+}
+
+model Donation {
+  id             String   @id @default(cuid())
+  organizationId String
+  date           String
+  amount         Decimal  @db.Money
+  fund           String
+  Person         Person?  @relation(fields: [personId], references: [id])
+  personId       String?
+  createdAt      DateTime @default(now())
+  loggedBy       String
+
+  @@map(name: "donations")
 }
