@@ -1,7 +1,21 @@
-import { withMiddlewareAuthRequired } from "@auth0/nextjs-auth0/edge";
+import { NextRequest, NextResponse } from "next/server";
 
-export default withMiddlewareAuthRequired();
+import { auth0 } from "@/lib/auth0";
 
-export const config = {
-  matcher: ["/dashboard/:path*", "/contacts/:path*", "/transactions/:path*"],
-};
+export async function middleware(request: NextRequest) {
+  const authRes = await auth0.middleware(request);
+
+  if (request.nextUrl.pathname.startsWith("/auth")) {
+    return authRes;
+  }
+
+  const session = await auth0.getSession(request);
+
+  if (!session) {
+    return NextResponse.redirect(
+      new URL("/auth/login", request.nextUrl.origin)
+    );
+  }
+
+  return authRes;
+}

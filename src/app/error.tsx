@@ -1,31 +1,21 @@
 "use client";
 
-import { useEffect } from "react";
-import { useRouter } from "next/navigation";
-import Button from "@mui/material/Button";
-import Typography from "@mui/material/Typography";
+import { Button } from "@/components/catalyst/button";
+import { Heading } from "@/components/catalyst/heading";
 
 export default function Error({
   error,
 }: {
   error: Error & { digest?: string };
 }) {
-  const router = useRouter();
-
-  useEffect(() => {
-    console.error(error);
-  }, [error]);
-
   return (
     <main>
-      <Typography variant="h6">Something went wrong!</Typography>
-      <Button
-        variant="contained"
-        onClick={() => router.push("/")}
-        sx={{ my: 2 }}
-      >
-        Return to dashboard
-      </Button>
+      <div className="flex flex-col gap-2 p-4">
+        <Heading>An error has occured</Heading>
+        <div>
+          <Button href="/">Return to dashboard</Button>
+        </div>
+      </div>
     </main>
   );
 }
