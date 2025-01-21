@@ -94,7 +94,7 @@ export default function DashboardPage() {
             </dt>
             <dd className="mt-1 text-3xl font-semibold tracking-tight">
               <NumericFormat
-                value={state.last30DaysDonationAmount}
+                value={state.last30DaysDonationAmount ?? 0}
                 thousandsGroupStyle="thousand"
                 thousandSeparator=","
                 displayType="text"
