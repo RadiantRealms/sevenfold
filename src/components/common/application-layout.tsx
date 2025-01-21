@@ -103,12 +103,12 @@ export function ApplicationLayout({ children }: { children: React.ReactNode }) {
         <Navbar>
           <NavbarSpacer />
           <NavbarSection>
-            <NavbarItem href="/search" aria-label="Search">
+            {/* <NavbarItem href="/search" aria-label="Search">
               <MagnifyingGlassIcon />
             </NavbarItem>
             <NavbarItem href="/inbox" aria-label="Inbox">
               <InboxIcon />
-            </NavbarItem>
+            </NavbarItem> */}
             <Dropdown>
               <DropdownButton as={NavbarItem}>
                 <Avatar src={user?.picture} />
@@ -128,7 +128,7 @@ export function ApplicationLayout({ children }: { children: React.ReactNode }) {
               />
               <SidebarLabel>Sevenfold</SidebarLabel>
             </SidebarItem>
-            <SidebarSection className="max-lg:hidden">
+            {/* <SidebarSection className="max-lg:hidden">
               <SidebarItem href="/search">
                 <MagnifyingGlassIcon />
                 <SidebarLabel>Search</SidebarLabel>
@@ -137,7 +137,7 @@ export function ApplicationLayout({ children }: { children: React.ReactNode }) {
                 <InboxIcon />
                 <SidebarLabel>Inbox</SidebarLabel>
               </SidebarItem>
-            </SidebarSection>
+            </SidebarSection> */}
           </SidebarHeader>
 
           <SidebarBody>

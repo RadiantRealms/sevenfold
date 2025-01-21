@@ -1,14 +1,12 @@
-# Sevenfold: An Organization Management App
+# Sevenfold: An Church Management App
 
-Sevenfold is a web application built with Next.js, Auth0, and Material UI to help organizations manage member information and track financial transactions. This project was inspired by a partnership with New Mount Zion Missionary Baptist Church of Seminola, based in Hialeah, Florida.
+Sevenfold is a web application built with Next.js, Auth0, and Tailwind to help churches manage and track member and financial data. This project was inspired by a partnership with New Mount Zion Missionary Baptist Church of Seminola based in Hialeah, Florida.
 
 ## Features:
 
 - Secure Login with Auth0
-- Manage Members (Create, Edit, & Sort)
-- Group Management
-- Track Transactions (Donations & Expenses)
-- Data Exporting (CSV)
+- Manage Members & Households
+- Track Donations
 
 ## Prerequisites:
 
@@ -21,7 +19,7 @@ Sevenfold is a web application built with Next.js, Auth0, and Material UI to hel
 
 - Create a Regular Web Application in the Auth0 Dashboard: https://manage.auth0.com/#/applications
 - Set up Callback and Logout URLs in the application settings:
-  - Allowed Callback URLs: `http://localhost:3000/api/auth/callback`
+  - Allowed Callback URLs: `http://localhost:3000/auth/callback`
   - Allowed Logout URLs: `http://localhost:3000/`
 - Record your Client ID, Client Secret, and Domain from the "Basic Information" section.
 
@@ -37,11 +35,12 @@ Sevenfold is a web application built with Next.js, Auth0, and Material UI to hel
 - Create a `.env` file in the root directory with the following variables (replace placeholders):
 
 ```bash
-AUTH0_BASE_URL=http://localhost:3000
+AUTH0_DOMAIN=<your-auth0-domain>
 AUTH0_CLIENT_ID=<your-auth0-client-id>
 AUTH0_CLIENT_SECRET=<your-auth0-client-secret>
-AUTH0_ISSUER_BASE_URL=<your-auth0-issuer-base-url>
 AUTH0_SECRET=<generate-a-secure-secret>
+APP_BASE_URL="http://localhost:3000"
+NEXT_PUBLIC_API_BASE_URL="http://localhost:3000"
 POSTGRES_PRISMA_URL=<your-postgres-database-url>
 POSTGRES_URL_NON_POOLING=<your-postgres-non-pooling-url>
 ```
@@ -67,7 +66,7 @@ Open http://localhost:3000 in your web browser.
 **Notes:**
 
 - New user registrations are placed in the "Sandbox" organization by default.
-- Plaid integration is a planned feature.
+- Bank integration is a planned feature.
 
 **Sources:**
 
