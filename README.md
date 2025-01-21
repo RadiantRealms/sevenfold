@@ -1,4 +1,4 @@
-# Sevenfold: An Church Management App
+# Sevenfold: Church Management Application
 
 Sevenfold is a web application built with Next.js, Auth0, and Tailwind to help churches manage and track member and financial data. This project was inspired by a partnership with New Mount Zion Missionary Baptist Church of Seminola based in Hialeah, Florida.
 
