@@ -88,7 +88,7 @@ export default function GivingPage() {
             </dt>
             <dd className="mt-1 text-3xl font-semibold tracking-tight">
               <NumericFormat
-                value={state.last30DaysDonationAmount}
+                value={state.last30DaysDonationAmount ?? 0}
                 thousandsGroupStyle="thousand"
                 thousandSeparator=","
                 displayType="text"
@@ -102,7 +102,7 @@ export default function GivingPage() {
             </dt>
             <dd className="mt-1 text-3xl font-semibold tracking-tight">
               <NumericFormat
-                value={state.totalDonationsAmount}
+                value={state.totalDonationsAmount ?? 0}
                 thousandsGroupStyle="thousand"
                 thousandSeparator=","
                 displayType="text"

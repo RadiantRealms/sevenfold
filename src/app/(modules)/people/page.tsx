@@ -178,7 +178,11 @@ export default function PeoplePage() {
           <div className="overflow-hidden rounded-lg px-4 py-5 border border-zinc-950/10 pb-6 dark:border-white/10 sm:p-6">
             <div className="text-center truncate text-sm font-medium">Age</div>
             <div className="mt-1 flex justify-center items-center">
-              <DoughnutChart data={ageData} />
+              {!state.adultCount && !state.childCount ? (
+                <Text>No data available</Text>
+              ) : (
+                <DoughnutChart data={ageData} />
+              )}
             </div>
           </div>
           <div className="overflow-hidden rounded-lg px-4 py-5 border border-zinc-950/10 pb-6 dark:border-white/10 sm:p-6">
@@ -186,7 +190,13 @@ export default function PeoplePage() {
               Gender
             </div>
             <div className="mt-1 flex justify-center items-center">
-              <DoughnutChart data={genderData} />
+              {!state.maleCount &&
+              !state.femaleCount &&
+              !state.nonbinaryCount ? (
+                <Text>No data available</Text>
+              ) : (
+                <DoughnutChart data={genderData} />
+              )}
             </div>
           </div>
           <div className="overflow-hidden rounded-lg px-4 py-5 border border-zinc-950/10 pb-6 dark:border-white/10 sm:p-6">
