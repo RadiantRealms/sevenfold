@@ -28,7 +28,7 @@ export function DonorsTable({ donors }: { donors: Donor[] }) {
             <TableHeader>Full Name</TableHeader>
             <TableHeader>Household</TableHeader>
             <TableHeader>Number of Donations</TableHeader>
-            <TableHeader>Total</TableHeader>
+            <TableHeader>Total (All Time)</TableHeader>
             <TableHeader className="relative w-0">
               <span className="sr-only">Actions</span>
             </TableHeader>

@@ -58,7 +58,7 @@ export default function ReportsPage() {
   return (
     <main>
       <div className="flex w-full flex-wrap items-end justify-between border-b border-zinc-950/10 pb-6 dark:border-white/10">
-        <Subheading>Donor Report</Subheading>
+        <Subheading>Donor Reports</Subheading>
       </div>
       <DonorsTable donors={state.donors} />
     </main>
