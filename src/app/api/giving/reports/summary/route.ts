@@ -1,5 +1,4 @@
 import { NextResponse } from "next/server";
-import dayjs from "dayjs";
 
 import { auth0 } from "@/lib/auth0";
 import prisma from "@/lib/prisma";

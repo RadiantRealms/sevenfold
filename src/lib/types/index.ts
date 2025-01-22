@@ -2,6 +2,10 @@ import { Prisma } from "@prisma/client";
 
 export type Person = Prisma.PersonGetPayload<{}>;
 
+export type QueriedPerson = Prisma.PersonGetPayload<{
+  include: { Household: { select: { id: true; name: true } } };
+}>;
+
 export type PrimaryContact = Prisma.PersonGetPayload<{
   include: { primaryFor: true };
 }>;

@@ -31,12 +31,10 @@ import {
 import { SidebarLayout } from "@/components/catalyst/sidebar-layout";
 import {
   ArrowRightStartOnRectangleIcon,
-  BanknotesIcon,
-  ChevronDownIcon,
+  BellIcon,
   ChevronUpIcon,
   Cog8ToothIcon,
   HeartIcon,
-  InboxIcon,
   LightBulbIcon,
   MagnifyingGlassIcon,
   ShieldCheckIcon,
@@ -103,11 +101,11 @@ export function ApplicationLayout({ children }: { children: React.ReactNode }) {
         <Navbar>
           <NavbarSpacer />
           <NavbarSection>
-            {/* <NavbarItem href="/search" aria-label="Search">
+            <NavbarItem href="/search" aria-label="Search">
               <MagnifyingGlassIcon />
             </NavbarItem>
-            <NavbarItem href="/inbox" aria-label="Inbox">
-              <InboxIcon />
+            {/* <NavbarItem href="/inbox" aria-label="Inbox">
+              <BellIcon />
             </NavbarItem> */}
             <Dropdown>
               <DropdownButton as={NavbarItem}>
@@ -128,16 +126,19 @@ export function ApplicationLayout({ children }: { children: React.ReactNode }) {
               />
               <SidebarLabel>Sevenfold</SidebarLabel>
             </SidebarItem>
-            {/* <SidebarSection className="max-lg:hidden">
-              <SidebarItem href="/search">
+            <SidebarSection className="max-lg:hidden">
+              <SidebarItem
+                href="/search"
+                current={pathname.startsWith("/search")}
+              >
                 <MagnifyingGlassIcon />
                 <SidebarLabel>Search</SidebarLabel>
               </SidebarItem>
-              <SidebarItem href="/inbox">
-                <InboxIcon />
-                <SidebarLabel>Inbox</SidebarLabel>
-              </SidebarItem>
-            </SidebarSection> */}
+              {/* <SidebarItem href="#">
+                <BellIcon />
+                <SidebarLabel>Notifications</SidebarLabel>
+              </SidebarItem> */}
+            </SidebarSection>
           </SidebarHeader>
 
           <SidebarBody>

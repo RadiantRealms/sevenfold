@@ -87,11 +87,10 @@ export default function DonationPage({
             ? dayjs(state.donation.date, "YYYY-MM-DD").format("MMMM DD, YYYY")
             : "N/A"}
         </Subheading>
-        <div className="flex">
-          <Button href={`/giving/donations/${state.donation?.id}/edit`}>
-            Edit Donation
-          </Button>
-        </div>
+
+        <Button href={`/giving/donations/${state.donation?.id}/edit`}>
+          Edit Donation
+        </Button>
       </div>
       <DescriptionList>
         <DescriptionTerm>Date</DescriptionTerm>
