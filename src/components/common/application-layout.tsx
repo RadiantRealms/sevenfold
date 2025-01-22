@@ -75,7 +75,7 @@ function AccountDropdownMenu({
         <DropdownLabel>Share feedback</DropdownLabel>
       </DropdownItem>
       <DropdownDivider />
-      <DropdownItem href="/auth/logout">
+      <DropdownItem prefetch={false} href="/auth/logout">
         <ArrowRightStartOnRectangleIcon />
         <DropdownLabel>Sign out</DropdownLabel>
       </DropdownItem>
