@@ -6,7 +6,7 @@ Sevenfold is a web application built with Next.js, Auth0, and Tailwind to help c
 
 - Secure Login with Auth0
 - Manage Members & Households
-- Track Donations
+- Track Donations (All Time & By Donor)
 
 ## Prerequisites:
 
@@ -65,8 +65,7 @@ Open http://localhost:3000 in your web browser.
 
 **Notes:**
 
-- New user registrations are placed in the "Sandbox" organization by default.
-- Bank integration is a planned feature.
+- New users are placed in the "Sandbox" Auth0 organization by default.
 
 **Sources:**
 
