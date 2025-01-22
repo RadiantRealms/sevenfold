@@ -1,11 +1,12 @@
 "use client";
 
 import { useState } from "react";
+import { MagnifyingGlassIcon } from "@heroicons/react/16/solid";
 
 import { Button } from "@/components/catalyst/button";
 import { Heading } from "@/components/catalyst/heading";
 import { Input, InputGroup } from "@/components/catalyst/input";
-import { MagnifyingGlassIcon } from "@heroicons/react/16/solid";
+import { Text } from "@/components/catalyst/text";
 
 import { LoadingProgress } from "@/components/common/loading-progress";
 import { SearchTable } from "@/components/search/search-table";
@@ -67,6 +68,10 @@ export default function SearchPage() {
       <div className="flex w-full flex-wrap items-end justify-between gap-4 border-b border-zinc-950/10 pb-6 dark:border-white/10">
         <div className="max-sm:w-full sm:flex-1">
           <Heading>Search</Heading>
+          <Text>
+            You can search by name, age range (adult or child), marital status
+            (single, married, or widowed), and household name.
+          </Text>
           <div className="mt-4">
             <InputGroup>
               <MagnifyingGlassIcon />
@@ -87,7 +92,7 @@ export default function SearchPage() {
         <SearchTable people={state.results} />
       )}
       {state.hasSubmitted && state.results.length === 0 && (
-        <p className="mt-4">No results found.</p>
+        <Text className="mt-4">No results found</Text>
       )}
     </main>
   );
