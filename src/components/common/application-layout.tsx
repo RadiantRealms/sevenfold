@@ -57,7 +57,7 @@ function AccountDropdownMenu({
 }) {
   return (
     <DropdownMenu className="min-w-64" anchor={anchor}>
-      <DropdownItem href="/profile">
+      {/* <DropdownItem href="/profile">
         <UserCircleIcon />
         <DropdownLabel>My profile</DropdownLabel>
       </DropdownItem>
@@ -74,7 +74,7 @@ function AccountDropdownMenu({
         <LightBulbIcon />
         <DropdownLabel>Share feedback</DropdownLabel>
       </DropdownItem>
-      <DropdownDivider />
+      <DropdownDivider /> */}
       <DropdownItem prefetch={false} href="/auth/logout">
         <ArrowRightStartOnRectangleIcon />
         <DropdownLabel>Sign out</DropdownLabel>
