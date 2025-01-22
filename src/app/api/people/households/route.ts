@@ -33,14 +33,14 @@ export async function GET() {
   }
 }
 
-export async function POST(req: Request) {
+export async function POST(request: Request) {
   try {
     const session = await auth0.getSession();
 
     if (!session) throw new Error("User is unauthorized");
 
     const organizationId = session?.user.org_id!;
-    const householdData = householdSchema.parse(await req.json());
+    const householdData = householdSchema.parse(await request.json());
 
     const household = await prisma.household.create({
       data: {

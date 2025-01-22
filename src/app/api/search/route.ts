@@ -3,14 +3,14 @@ import { NextResponse } from "next/server";
 import { auth0 } from "@/lib/auth0";
 import prisma from "@/lib/prisma";
 
-export async function GET(req: Request) {
+export async function GET(request: Request) {
   try {
     const session = await auth0.getSession();
 
     if (!session) throw new Error("User is unauthorized");
 
     const organizationId = session?.user.org_id;
-    const url = new URL(req.url);
+    const url = new URL(request.url);
     const query = url.searchParams.get("q") || "";
 
     if (!query) {
