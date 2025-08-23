@@ -34,6 +34,7 @@ export async function GET(request: Request) {
           { gender: { contains: query, mode: "insensitive" } },
           { ageRange: { contains: query, mode: "insensitive" } },
           { maritalStatus: { contains: query, mode: "insensitive" } },
+          { Household: { name: { contains: query, mode: "insensitive" } } },
         ],
       },
       include: {

@@ -34,15 +34,14 @@ export async function GET() {
         return {
           personId: summary.personId,
           fullName: person?.fullName || "N/A",
+          household: person?.Household,
           totalDonations: summary._count.id,
           totalAmount: summary._sum.amount,
         };
       })
     );
 
-    return NextResponse.json({
-      donorReport,
-    });
+    return NextResponse.json({ donorReport });
   } catch (error: any) {
     return NextResponse.json(
       { error: error.message },
